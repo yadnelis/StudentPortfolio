@@ -107,8 +107,8 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
     <div {...props} className=" bg-slate-50 ">
       <p className="border-b border-slate-300 px-1 py-2">
         <span className="text-gray-700 bg-gray-100 px-2 py-1 rounded-4xl">
-          {StartDate && <span>{format(StartDate, "YYY/MM/dd")}</span>}
-          {EndDate && <span> - {format(EndDate, "YYY/MM/dd")}</span>}
+          {StartDate && <span>{format(StartDate, "yyyy/MM/dd")}</span>}
+          {EndDate && <span> - {format(EndDate, "yyyy/MM/dd")}</span>}
         </span>{" "}
         <span className="text-primary-500 font-semibold">
           {Type === 0 ? OtherType : enums.acknowledgementType[Type]}
