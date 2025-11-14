@@ -6,12 +6,15 @@ import type { LucideProps } from "lucide-react";
 import type { FC, ReactElement } from "react";
 import { IconButton, type IconButtonProps } from "./IconButton";
 
+export type textInputValue = string | undefined | readonly string[];
+
 type buttonProps = { icon: ReactElement<Omit<LucideProps, "ref">> } & Omit<
   IconButtonProps,
   "children"
 >;
 
-export interface TextInputProps extends MTextInputProps {
+export interface TextInputProps extends Omit<MTextInputProps, "value"> {
+  value?: textInputValue;
   leftButton?: buttonProps;
   rightButton?: buttonProps;
   classNames?: Record<"input" | "wrapper" | string, string>;
