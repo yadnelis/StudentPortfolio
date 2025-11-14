@@ -17,7 +17,8 @@ namespace StudentPortfolio.API.Models.Entities
         [Column(TypeName = "tinytext")]
         public string LastName { get; set; }
         public DateOnly? StartDate { get; set; }
-        
+        public DateOnly? EndDate { get; set; }
+
         [Column(TypeName = "tinytext")]
         public string Institution { get; set; }
         public bool Deleted { get; set; }

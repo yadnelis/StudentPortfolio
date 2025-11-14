@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentPortfolio.API.Infrastructure;
 
@@ -11,9 +12,11 @@ using StudentPortfolio.API.Infrastructure;
 namespace StudentPortfolio.API.Migrations
 {
     [DbContext(typeof(StudentPortfolioContext))]
-    partial class StudentPortfolioContextModelSnapshot : ModelSnapshot
+    [Migration("20251113232840_sp01")]
+    partial class sp01
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
