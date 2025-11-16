@@ -25,7 +25,6 @@ export const getStudent = async (id: string) => {
 
 export const postStudent = async (args?: CreateStudentRequest) => {
   const url = controller;
-  console.log(args);
   var res = await axios.post<GetStudentsResponse>(url, args);
   return res.data;
 };

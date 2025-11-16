@@ -66,4 +66,5 @@
 
   --color-form-error-text: var(--color-red-400);
   --color-form-error-border: var(--color-red-400);
+  --color-form-required: var(--color-red-400);
 }

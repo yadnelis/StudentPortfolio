@@ -53,6 +53,8 @@ export const TextInput: FC<TextInputProps> = ({
           }`,
           section: `inline-flex absolute h-full [&[data-position=right]]:right-0 [&[data-position=left]]:left-0 px-2 ${classNames?.section}`,
           wrapper: `relative ${classNames?.wrapper}`,
+          error: "text-form-error-text",
+          required: "text-form-required",
           ...classNames,
         }}
       />

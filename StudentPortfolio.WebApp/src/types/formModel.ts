@@ -26,7 +26,6 @@ export const addErrorsFromResponse = <T>(
     if (nv[error.property]) nv[error.property].error = error.message;
     else nv[error.property] = { value: undefined, error: error.message };
   });
-  console.log(nv);
   return nv;
 };
 

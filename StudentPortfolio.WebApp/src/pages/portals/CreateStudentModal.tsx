@@ -1,6 +1,6 @@
-import { notifications } from "@mantine/notifications";
 import { useCallback, useState, type FC } from "react";
 import { createPortal } from "react-dom";
+import toast from "react-hot-toast";
 import { postStudent } from "../../api/students";
 import { MaskedInput } from "../../components/MaskedInput";
 import { ModalContent, ModalRoot } from "../../components/Modal";
@@ -14,7 +14,7 @@ import { addErrorsFromResponse, formModelToValue } from "../../types/formModel";
 export const CreateStudentModal: FC = () => {
   const [createStudent, { mutating }] = useMutation(postStudent);
   const [open, setOpen] = useState(true);
-  const { formValue, setFormValue, handleChange, addError, removeError } =
+  const { formValue, setFormValue, handleChange } =
     useFormModel<CreateStudentRequest>();
 
   useEvent(AppEvents.OpenCreateUserModal, () => {
@@ -25,15 +25,20 @@ export const CreateStudentModal: FC = () => {
     const payload = formModelToValue(formValue);
     createStudent(payload, {
       onSuccess: () => {
-        notifications.show({
-          title: "Student created",
-          message: "The student was created successfully.",
-          color: "green",
+        toast.success("Student created successfully!", {
+          position: "bottom-center",
         });
+
         setOpen(false);
       },
       onError: (e) => {
-        console.log("here", e?.response);
+        toast.error(
+          "Error creating student. Please review form validation errors.",
+          {
+            position: "bottom-center",
+          }
+        );
+
         if (e?.response?.data?.errors)
           setFormValue((prev) =>
             addErrorsFromResponse(prev, e?.response?.data)
@@ -54,6 +59,7 @@ export const CreateStudentModal: FC = () => {
         <div className="space-y-5 mb-10">
           <div className="flex justify-center gap-3 mb-5">
             <TextInput
+              required
               label="Institutional Id"
               className="w-70"
               placeholder="M00102030"

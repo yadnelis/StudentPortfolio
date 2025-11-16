@@ -37,6 +37,7 @@ export const LoaderDots: FC<LoaderDotsProps> = ({
       setVisible(false);
     }
   }, [visible]);
+
   return !visible ? (
     <></>
   ) : (
