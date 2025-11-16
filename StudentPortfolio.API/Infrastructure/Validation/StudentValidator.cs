@@ -12,7 +12,10 @@ namespace StudentPortfolio.API.Infrastructure.Validation
             var errors = new List<ValidationError>();
             var requestValidator = new RequestValidator<Student, CreateStudentRequest>(repo, request);
 
-            errors.AddRange(await requestValidator.MustBeUnique(s => s.InstitutionalId, request.InstitutionalId));
+            errors.AddRange(requestValidator.NotNull(s => s.InstitutionalId));
+            if(request.InstitutionalId != null)
+                errors.AddRange(await requestValidator.MustBeUnique(s => s.InstitutionalId, request.InstitutionalId));
+
             errors.AddRange(requestValidator.NotNull(s => s.Name));
             errors.AddRange(requestValidator.NotNull(s => s.LastName));
 

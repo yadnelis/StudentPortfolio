@@ -1,16 +1,23 @@
 import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { Outlet } from "react-router";
-import { Header } from "../components/Header";
+import { Layout } from "../components/LayoutComponents";
+import { CreateStudentModal } from "./portals/CreateStudentModal";
 
 export default function AppLayout() {
   return (
-    <div className={` h-full grid grid-rows-[min-content_minmax(0,1fr)]`}>
+    <Layout>
       <MantineProvider>
-        <Header />
+        <Layout.Header />
         <main className="overflow-auto">
           <Outlet />
         </main>
+        {/* Portals: Modals, Dialogs and sidebars */}
+        <Layout.Portals>
+          <CreateStudentModal />
+        </Layout.Portals>
+        <Notifications />
       </MantineProvider>
-    </div>
+    </Layout>
   );
 }

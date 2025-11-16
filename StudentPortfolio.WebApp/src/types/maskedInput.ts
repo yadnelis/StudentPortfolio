@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, FocusEvent } from "react";
 import type { TextInputProps, textInputValue } from "../components/TextInput";
 
 //Interfaces
@@ -11,11 +11,15 @@ export interface maskBlock {
 export interface MaskedInputProps extends TextInputProps {
   mask: string;
   blocks?: maskBlock[];
-  onChange?: (e: MaskedInputChangeEventResponse) => void;
+  onChange?: (
+    e: ChangeEvent<HTMLInputElement> & _MaskedInputEventResponse
+  ) => void;
+  onBlur?: (
+    e: FocusEvent<HTMLInputElement, Element> & _MaskedInputEventResponse
+  ) => void;
 }
 
-export interface MaskedInputChangeEventResponse
-  extends ChangeEvent<HTMLInputElement> {
+interface _MaskedInputEventResponse {
   value: string;
   rawValue: textInputValue;
   isValid: boolean;

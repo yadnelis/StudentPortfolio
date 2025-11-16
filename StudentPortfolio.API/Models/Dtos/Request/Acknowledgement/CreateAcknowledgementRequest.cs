@@ -9,7 +9,6 @@ namespace StudentPortfolio.API.Models.Dtos.Request.Acknowledgement
         public AcknowledgementType Type { get; set; }
         public string Place { get; set; }
         public string Description { get; set; }
-        public DateOnly? Date { get; set; }
         public DateOnly? StartDate { get; set; }
         public DateOnly? EndDate { get; set; }
         public string OtherType { get; set; }

@@ -14,6 +14,13 @@ namespace StudentPortfolio.API.Infrastructure.Validation
             var errors = new List<ValidationError>();
             var requestValidator = new RequestValidator<Acknowledgement, CreateAcknowledgementRequest>(repo, request);
 
+            errors.AddRange(requestValidator.NotNull(x => x.StartDate));
+            errors.AddRange(requestValidator.NotEmpty(x => x.StudentId));
+
+            if(request.EndDate.HasValue && request.StartDate.HasValue)
+            {
+                errors.AddRange(requestValidator.GreaterThan(x => x.EndDate.Value, x => x.StartDate.Value));
+            }
             if (request.Type == AcknowledgementType.Other)
             {
                 errors.AddRange(requestValidator.NotNull(s => s.OtherType));
@@ -22,7 +29,6 @@ namespace StudentPortfolio.API.Infrastructure.Validation
             if (request.Type == AcknowledgementType.Internship || request.Type == AcknowledgementType.Investigation)
             {
                 errors.AddRange(requestValidator.NotNull(s => s.Place));
-
             }
 
             return new ValidationResult<CreateAcknowledgementRequest>

@@ -61,6 +61,7 @@ app.UseCors(config =>
 {
     config.AllowAnyOrigin();
     config.AllowAnyMethod();
+    config.AllowAnyHeader();
 });
 
 app.Map("/api", () => "Ok");

@@ -1,0 +1,30 @@
+import { useThrottledCallback } from "@mantine/hooks";
+import { useState } from "react";
+
+interface options<TResult, TErrorResult = void> {
+  onSuccess?: (args: TResult) => void;
+  onSettled?: () => void;
+  onError?: (reason: any) => TErrorResult;
+}
+
+export const useMutation = <TArgs, TResult>(
+  fn: (args: TArgs) => Promise<TResult>
+) => {
+  const [mutating, setMutating] = useState(false);
+
+  const mutate = useThrottledCallback(
+    async (data: TArgs, options?: options<TResult>) => {
+      setMutating(true);
+      fn(data)
+        .then(options?.onSuccess)
+        .catch(options?.onError)
+        .finally(() => {
+          options?.onSettled?.();
+          setMutating(false);
+        });
+    },
+    1000
+  );
+
+  return [mutate, { mutating }] as const;
+};

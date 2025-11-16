@@ -6,6 +6,7 @@ namespace StudentPortfolio.API.Controllers
 {
     public class AppControllerBase(IWebHostEnvironment env) : ControllerBase
     {
+        [NonAction]
         [ApiExplorerSettings(IgnoreApi = true)]
         public override OkObjectResult Ok([ActionResultObjectValue] object value)
         {
@@ -17,6 +18,7 @@ namespace StudentPortfolio.API.Controllers
             });
         }
 
+        [NonAction]
         [ApiExplorerSettings(IgnoreApi = true)]
         public new OkObjectResult Ok()
         {
@@ -27,6 +29,7 @@ namespace StudentPortfolio.API.Controllers
             });
         }
 
+        [NonAction]
         [ApiExplorerSettings(IgnoreApi = true)]
         public BadRequestObjectResult BadRequest([ActionResultObjectValue] Exception error)
         {

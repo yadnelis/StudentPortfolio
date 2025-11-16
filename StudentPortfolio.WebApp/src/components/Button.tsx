@@ -6,6 +6,7 @@ export const Button: FC<ButtonProps> = ({
   rounded = "default",
   color = "default",
   children,
+  loading = false,
   ...rest
 }) => {
   const tailwind = buttonVariants({ className, color, rounded });
@@ -19,6 +20,7 @@ export const Button: FC<ButtonProps> = ({
 export interface ButtonProps extends ComponentProps<"button"> {
   color?: "default" | "secondary" | "primary" | "accent";
   rounded?: "default" | "none" | "max";
+  loading?: boolean;
 }
 
 const buttonVariants = tv({

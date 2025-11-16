@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
+@import "./styles/loader.css";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --accent: #c1e25e;
   font-size: 16px;
   font-family: "Inter", sans-serif;
 }
@@ -24,7 +24,46 @@
 }
 
 @theme {
-  --color-accent: #c1e25e;
-  --color-secondary: #38405e;
-  --color-primary: #3d4f26;
+  --color-accent: oklch(0.86 0.16 122);
+  --color-secondary: oklch(0.38 0.05 272);
+  --color-primary: oklch(0.4 0.07 129);
+
+  --color-primary-50: oklch(0.97 0.01 126);
+  --color-primary-100: oklch(0.92 0.04 127);
+  --color-primary-200: oklch(0.86 0.06 127);
+  --color-primary-300: oklch(0.81 0.08 127);
+  --color-primary-400: oklch(0.75 0.1 128);
+  --color-primary-500: oklch(0.7 0.13 129);
+  --color-primary-600: oklch(0.6 0.11 129);
+  --color-primary-700: oklch(0.5 0.09 129);
+  --color-primary-800: var(---color-primary);
+  --color-primary-900: oklch(0.29 0.04 128);
+  --color-primary-950: oklch(0.17 0.02 128);
+
+  --color-secondary-50: oklch(0.96 0.01 277);
+  --color-secondary-100: oklch(0.88 0.02 273);
+  --color-secondary-200: oklch(0.8 0.03 274);
+  --color-secondary-300: oklch(0.72 0.05 273);
+  --color-secondary-400: oklch(0.63 0.06 272);
+  --color-secondary-500: oklch(0.54 0.08 272);
+  --color-secondary-600: oklch(0.48 0.07 271);
+  --color-secondary-700: var(---color-secondary);
+  --color-secondary-800: oklch(0.32 0.04 273);
+  --color-secondary-900: oklch(0.24 0.03 272);
+  --color-secondary-950: oklch(0.15 0.01 276);
+
+  --color-accent-50: oklch(0.98 0.02 117);
+  --color-accent-100: oklch(0.95 0.07 119);
+  --color-accent-200: oklch(0.91 0.11 120);
+  --color-accent-300: oklch(0.88 0.14 121);
+  --color-accent-400: var(--color-accent);
+  --color-accent-500: oklch(0.82 0.19 124);
+  --color-accent-600: oklch(0.71 0.17 124);
+  --color-accent-700: oklch(0.59 0.14 123);
+  --color-accent-800: oklch(0.47 0.11 123);
+  --color-accent-900: oklch(0.33 0.07 122);
+  --color-accent-950: oklch(0.19 0.04 122);
+
+  --color-form-error-text: var(--color-red-400);
+  --color-form-error-border: var(--color-red-400);
 }

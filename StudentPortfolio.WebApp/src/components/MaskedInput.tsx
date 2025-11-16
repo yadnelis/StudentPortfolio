@@ -1,4 +1,4 @@
-import { useMemo, type ChangeEvent } from "react";
+import { useMemo, type ChangeEvent, type FocusEvent } from "react";
 import {
   maskOperators,
   maskOperatorsSignatures,
@@ -14,23 +14,24 @@ export const MaskedInput = ({
   value,
   onChange,
   blocks,
+  onBlur,
   ...props
 }: MaskedInputProps) => {
   const { blockPositions, blockIndexMap } = useBlockIndexes(mask, blocks);
   value = format(value, mask, blockIndexMap, value).value;
 
   const _onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
     const rawValue = e.target.value;
     const res = format(rawValue, mask, blockIndexMap, value);
 
     const blockValues = blockPositions?.reduce<Record<string, string>>(
       (prev, { block, substring }) => {
-        prev[block] = value.substring(substring[0], substring[1]);
+        prev[block] = res.value.substring(substring[0], substring[1]);
         return prev;
       },
       {}
     );
+
     onChange?.({
       ...e,
       ...res,
@@ -38,8 +39,33 @@ export const MaskedInput = ({
     });
   };
 
+  const _onblur = (e: FocusEvent<HTMLInputElement, Element>) => {
+    const rawValue = e.target.value;
+    const res = format(rawValue, mask, blockIndexMap, value);
+
+    const blockValues = blockPositions?.reduce<Record<string, string>>(
+      (prev, { block, substring }) => {
+        prev[block] = res.value.substring(substring[0], substring[1]);
+        return prev;
+      },
+      {}
+    );
+
+    onBlur?.({
+      ...e,
+      ...res,
+      blockValues,
+    });
+  };
+
   return (
-    <TextInput {...props} data-mask={mask} onChange={_onChange} value={value} />
+    <TextInput
+      {...props}
+      data-mask={mask}
+      onChange={_onChange}
+      value={value}
+      onBlur={_onblur}
+    />
   );
 };
 
