@@ -9,20 +9,36 @@ import { useMutation } from "../../hooks/api";
 import { AppEvents, useEvent } from "../../hooks/useEvent";
 import { useFormModel } from "../../hooks/useFormModel";
 import type { CreateStudentRequest } from "../../types/dtos/student";
-import { addErrorsFromResponse, formModelToValue } from "../../types/formModel";
+import {
+  addErrorsFromResponse,
+  formModelToValue,
+  type FormModel,
+} from "../../types/formModel";
 
 export const CreateStudentModal: FC = () => {
   const [createStudent, { mutating }] = useMutation(postStudent);
   const [open, setOpen] = useState(true);
-  const { formValue, setFormValue, handleChange } =
+  const { formValue, setFormValue, handleChange, addError } =
     useFormModel<CreateStudentRequest>();
+
+  const onClose = useCallback(() => {
+    setFormValue({} as FormModel<CreateStudentRequest>);
+    setOpen(false);
+  }, []);
 
   useEvent(AppEvents.OpenCreateUserModal, () => {
     setOpen(true);
   });
 
   const post = useCallback(async () => {
+    if (formValue.startDate && !formValue.startDate.isValid) {
+      addError(
+        "startDate",
+        "Please enter a date in the format YYYY-MM-DD, or leave the field empty"
+      );
+    }
     const payload = formModelToValue(formValue);
+
     createStudent(payload, {
       onSuccess: () => {
         toast.success("Student created successfully!", {
@@ -32,25 +48,35 @@ export const CreateStudentModal: FC = () => {
         setOpen(false);
       },
       onError: (e) => {
-        toast.error(
-          "Error creating student. Please review form validation errors.",
-          {
-            position: "bottom-center",
-          }
-        );
-
-        if (e?.response?.data?.errors)
-          setFormValue((prev) =>
-            addErrorsFromResponse(prev, e?.response?.data)
+        if (e.status === 422) {
+          toast.error(
+            "Error creating student. Please review form validation errors.",
+            {
+              position: "bottom-center",
+            }
           );
+
+          if (e?.response?.data?.errors)
+            setFormValue((prev) =>
+              addErrorsFromResponse(prev, e?.response?.data)
+            );
+        } else if (e.status === 400) {
+          toast.error("Could not create student due to errors in the values.", {
+            position: "bottom-center",
+          });
+        } else {
+          toast.error("Unexpected error occured.", {
+            position: "bottom-center",
+          });
+        }
       },
     });
   }, [formValue]);
 
   return createPortal(
-    <ModalRoot onClose={() => setOpen(false)} opened={open} className="gap-5">
+    <ModalRoot onClose={onClose} opened={open} className="gap-5">
       <ModalContent
-        onClose={() => setOpen(false)}
+        onClose={onClose}
         title="New student"
         submitText="Create Student"
         onSubmit={post}
@@ -98,6 +124,7 @@ export const CreateStudentModal: FC = () => {
             <MaskedInput
               label="Start Date"
               className="w-63"
+              wrapperClassName="w-63"
               placeholder="yyyy-mm-dd"
               mask={"YYYY-MM-DD"}
               blocks={[
@@ -114,6 +141,7 @@ export const CreateStudentModal: FC = () => {
             <MaskedInput
               label="End Date"
               className="w-63"
+              wrapperClassName="w-63"
               placeholder="yyyy-mm-dd"
               mask={"YYYY-MM-DD"}
               blocks={[

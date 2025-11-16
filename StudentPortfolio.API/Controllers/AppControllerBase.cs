@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using StudentPortfolio.API.Infrastructure.Validation.Models;
 
 namespace StudentPortfolio.API.Controllers
 {
@@ -28,6 +29,15 @@ namespace StudentPortfolio.API.Controllers
                 Resource = HttpContext.Request.Path.Value,
             });
         }
+
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public UnprocessableEntityObjectResult UnprocessableEntity<T>(ValidationResult<T> result)
+        {
+            result.Time = DateTime.UtcNow;
+            return base.UnprocessableEntity(result);
+        }
+
 
         [NonAction]
         [ApiExplorerSettings(IgnoreApi = true)]

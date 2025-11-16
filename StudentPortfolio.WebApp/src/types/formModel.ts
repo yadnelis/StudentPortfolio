@@ -22,7 +22,7 @@ export const addErrorsFromResponse = <T>(
   response: ValidationResult<T>
 ) => {
   const nv = { ...formModel };
-  response.errors.forEach((error) => {
+  response.errors?.forEach?.((error) => {
     if (nv[error.property]) nv[error.property].error = error.message;
     else nv[error.property] = { value: undefined, error: error.message };
   });

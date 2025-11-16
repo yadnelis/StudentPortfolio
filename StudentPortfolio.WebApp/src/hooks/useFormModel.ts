@@ -26,7 +26,7 @@ export const useFormModel = <T>() => {
 
   const handleChange = (
     name: keyof T,
-    value: T[typeof name],
+    value: string,
     isValid?: boolean,
     error?: string
   ) => {

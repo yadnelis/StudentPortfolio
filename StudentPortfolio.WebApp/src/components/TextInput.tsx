@@ -17,6 +17,7 @@ export interface TextInputProps extends Omit<MTextInputProps, "value"> {
   value?: textInputValue;
   leftButton?: buttonProps;
   rightButton?: buttonProps;
+  wrapperClassName?: string;
   classNames?: Record<"input" | "wrapper" | string, string>;
 }
 
@@ -25,6 +26,7 @@ export const TextInput: FC<TextInputProps> = ({
   rightButton,
   size,
   className,
+  wrapperClassName,
   classNames,
   ...props
 }) => {
@@ -44,21 +46,20 @@ export const TextInput: FC<TextInputProps> = ({
   }
 
   return (
-    <div className="relative">
-      <MTextInput
-        {...props}
-        classNames={{
-          input: `bg-white hover:bg-slate-50 p-2 border-gray-200 rounded-xs border-2  focus:ring-blue-200/50 focus:ring-2 focus:border-gray-300 outline-none ${
-            className ?? ""
-          }`,
-          section: `inline-flex absolute h-full [&[data-position=right]]:right-0 [&[data-position=left]]:left-0 px-2 ${classNames?.section}`,
-          wrapper: `relative ${classNames?.wrapper}`,
-          error: "text-form-error-text",
-          required: "text-form-required",
-          ...classNames,
-        }}
-      />
-    </div>
+    <MTextInput
+      {...props}
+      classNames={{
+        input: `bg-white hover:bg-slate-50 p-2 border-gray-200 rounded-xs border-2  focus:ring-blue-200/50 focus:ring-2 focus:border-gray-300 outline-none ${
+          className ?? ""
+        }`,
+        section: `inline-flex absolute h-full [&[data-position=right]]:right-0 [&[data-position=left]]:left-0 px-2 ${classNames?.section}`,
+        wrapper: `relative ${classNames?.wrapper} `,
+        root: `${wrapperClassName}`,
+        error: "text-form-error-text text-wrap",
+        required: "text-form-required",
+        ...classNames,
+      }}
+    />
   );
 };
 

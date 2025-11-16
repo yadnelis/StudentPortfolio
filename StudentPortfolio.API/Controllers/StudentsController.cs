@@ -55,7 +55,7 @@ namespace StudentPortfolio.API.Controllers
             {
                 var validationResult = await validator.ValidateCreate(request);
                 if (!validationResult.Success)
-                    return BadRequest(validationResult);
+                    return UnprocessableEntity(validationResult);
 
                 var entity = await repo.Create(request);
                 return Ok(entity.Adapt<GetStudentResponse>());
@@ -74,7 +74,7 @@ namespace StudentPortfolio.API.Controllers
             {
                 var validationResult = await validator.ValidateUpdate(request);
                 if (!validationResult.Success)
-                    return BadRequest(validationResult);
+                    return UnprocessableEntity(validationResult);
 
                 var entity = await repo.Update(id, request);
                 return Ok(entity.Adapt<GetStudentResponse>());
