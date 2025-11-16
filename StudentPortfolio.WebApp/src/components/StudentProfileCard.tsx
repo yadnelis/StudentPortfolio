@@ -1,5 +1,5 @@
-import { format } from "date-fns";
 import { ChevronDown, ChevronUp, Dot, Plus } from "lucide-react";
+import moment from "moment";
 import {
   Children,
   useMemo,
@@ -53,13 +53,13 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
   return (
     <div
       {...props}
-      className="px-10 w-[min(90vw,_1200px)] py-7 bg-slate-50 flex gap-10 flex-col shadow-lg max-w-300 outline-accent hover:outline-2 group/studentcard transition-all transition-200"
+      className="px-10 w-[min(90vw,1200px)] py-7 bg-slate-50 flex gap-10 flex-col shadow-lg max-w-300 outline-accent hover:outline-2 group/studentcard transition-all transition-200"
     >
       <div>
         <div className="py-2">
-          <span className="font-bold !text-base">{studentId}</span>
+          <span className="font-bold text-base!">{studentId}</span>
           <Dot className="inline-block" />
-          <span className="font-semibold !text-base">{fullName}</span>
+          <span className="font-semibold text-base!">{fullName}</span>
         </div>
         {description && (
           <div>
@@ -107,8 +107,8 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
     <div {...props} className=" bg-slate-50 ">
       <p className="border-b border-slate-300 px-1 py-2">
         <span className="text-gray-700 bg-gray-100 px-2 py-1 rounded-4xl">
-          {StartDate && <span>{format(StartDate, "yyyy/MM/dd")}</span>}
-          {EndDate && <span> - {format(EndDate, "yyyy/MM/dd")}</span>}
+          {StartDate && <span>{moment(StartDate).format("YYYY/MM/DD")}</span>}
+          {EndDate && <span> - {moment(EndDate).format("YYYY/MM/DD")}</span>}
         </span>{" "}
         <span className="text-primary-500 font-semibold">
           {Type === 0 ? OtherType : enums.acknowledgementType[Type]}

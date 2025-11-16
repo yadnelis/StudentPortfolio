@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useCallback, useState, type FC } from "react";
 import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
@@ -30,15 +31,37 @@ export const CreateStudentModal: FC = () => {
     setOpen(true);
   });
 
-  const post = useCallback(async () => {
-    if (formValue.startDate && !formValue.startDate.isValid) {
+  const validate = () => {
+    let valid = true;
+    if (
+      formValue.startDate &&
+      !moment(formValue.startDate.value, "YYYY-MM-DD", true).isValid()
+    ) {
+      valid = false;
       addError(
         "startDate",
         "Please enter a date in the format YYYY-MM-DD, or leave the field empty"
       );
     }
-    const payload = formModelToValue(formValue);
 
+    if (
+      formValue.endDate &&
+      !moment(formValue.endDate.value, "YYYY-MM-DD", true).isValid()
+    ) {
+      valid = false;
+      addError(
+        "endDate",
+        "Please enter a date in the format YYYY-MM-DD, or leave the field empty"
+      );
+    }
+
+    return valid;
+  };
+
+  const post = useCallback(async () => {
+    const valid = validate();
+    if (!valid) return;
+    const payload = formModelToValue(formValue);
     createStudent(payload, {
       onSuccess: () => {
         toast.success("Student created successfully!", {
@@ -127,6 +150,7 @@ export const CreateStudentModal: FC = () => {
               wrapperClassName="w-63"
               placeholder="yyyy-mm-dd"
               mask={"YYYY-MM-DD"}
+              onBlur={validate}
               blocks={[
                 { block: "YYYY", operator: "0" },
                 { block: "MM", operator: "0" },
@@ -143,6 +167,7 @@ export const CreateStudentModal: FC = () => {
               className="w-63"
               wrapperClassName="w-63"
               placeholder="yyyy-mm-dd"
+              onBlur={validate}
               mask={"YYYY-MM-DD"}
               blocks={[
                 { block: "YYYY", operator: "0" },
