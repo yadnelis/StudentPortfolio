@@ -6,10 +6,13 @@ import {
   useState,
   type ComponentProps,
   type FC,
+  type MouseEventHandler,
   type ReactNode,
 } from "react";
-import type { Acknowledgement } from "../types/dtos/acknowledgement";
-import { enums } from "../utilities/enums";
+import {
+  AcknowledgementType,
+  type Acknowledgement,
+} from "../types/dtos/acknowledgement";
 import { Button } from "./Button";
 
 interface AcknowledgementProps
@@ -26,6 +29,7 @@ interface StudentProfileCardProps
   fullName?: string;
   description?: string;
   children: ReactNode;
+  onClickAddAcknowledgement: MouseEventHandler<HTMLButtonElement>;
 }
 
 export const StudentProfileCard: FC<StudentProfileCardProps> = ({
@@ -33,6 +37,7 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
   fullName,
   description,
   children,
+  onClickAddAcknowledgement,
   ...props
 }) => {
   const [showHidden, setShowHidden] = useState(false);
@@ -84,7 +89,7 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
             )}
           </Button>
         )}
-        <Button color={"accent"}>
+        <Button color={"accent"} onClick={onClickAddAcknowledgement}>
           <span className="flex items-center gap-2">
             <Plus className="inline size-5" /> Acknowledge
           </span>
@@ -101,6 +106,7 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
   place: Place,
   otherType: OtherType,
   children,
+  description,
   ...props
 }) => {
   return (
@@ -111,10 +117,15 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
           {EndDate && <span> - {moment(EndDate).format("YYYY/MM/DD")}</span>}
         </span>{" "}
         <span className="text-primary-500 font-semibold">
-          {Type === 0 ? OtherType : enums.acknowledgementType[Type]}
+          {Type === 0
+            ? OtherType
+            : Object.entries(AcknowledgementType).find(
+                (x) => x[1] === Type
+              )?.[0]}
         </span>{" "}
         {Place && <span className="">at {Place}</span>}
       </p>
+      {description && <p className="bg-slate-100 p-3">{description}</p>}
       {children && <p className="bg-slate-100 p-3">{children}</p>}
     </div>
   );

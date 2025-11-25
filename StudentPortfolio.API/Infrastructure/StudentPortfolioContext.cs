@@ -11,6 +11,13 @@ namespace StudentPortfolio.API.Infrastructure
 
         public StudentPortfolioContext(DbContextOptions<StudentPortfolioContext> options) : base(options) { }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Acknowledgement>().HasQueryFilter(b => !b.Deleted);
+            modelBuilder.Entity<Student>().HasQueryFilter(b => !b.Deleted);
+            base.OnModelCreating(modelBuilder);
+        }
+
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
 

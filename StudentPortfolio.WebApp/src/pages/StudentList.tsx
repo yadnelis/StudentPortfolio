@@ -5,6 +5,7 @@ import {
   AcknowledgementListItem,
   StudentProfileCard,
 } from "../components/StudentProfileCard";
+import { AppEvents, emitEvent } from "../hooks/useEvent";
 import type { Student } from "../types/dtos/student";
 
 export const StudentList: FC = () => {
@@ -26,6 +27,13 @@ export const StudentList: FC = () => {
           {...st}
           fullName={st.fullName}
           institutionalId={st.institutionalId}
+          onClickAddAcknowledgement={() => {
+            emitEvent(AppEvents.OpenCreateAcknowledgementModal, {
+              fullName: st.fullName,
+              institutionalId: st.institutionalId,
+              id: st.id,
+            });
+          }}
         >
           {st.acknowledgements?.map((ack) => (
             <AcknowledgementListItem key={ack.id} {...ack} />

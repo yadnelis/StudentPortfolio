@@ -40,3 +40,27 @@ export function appendODataQueryString(
   const query = convertToURLQueryParams(params);
   return `${url}${query ? `?${query}` : ""}`;
 }
+
+export function ordinalSuffixOf(i: number) {
+  let j = i % 10,
+    k = i % 100;
+  if (j === 1 && k !== 11) {
+    return "st";
+  }
+  if (j === 2 && k !== 12) {
+    return "nd";
+  }
+  if (j === 3 && k !== 13) {
+    return "rd";
+  }
+  return "th";
+}
+
+export function getEnumName<TValue, TEnum extends Record<string, TValue>>(
+  enumObj: TEnum,
+  value: TValue
+) {
+  return Object.entries(enumObj).find(
+    ([_key, _value]) => _value === value
+  )?.[0];
+}

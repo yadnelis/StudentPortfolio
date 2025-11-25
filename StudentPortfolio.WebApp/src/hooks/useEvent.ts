@@ -2,22 +2,25 @@ import { useEffect } from "react";
 
 export const AppEvents = {
   OpenCreateUserModal: "modal.opencreateusermodal",
-  OpenAddAcknowledgementModal: "modal.openaddacknowledgementmodal",
+  OpenCreateAcknowledgementModal: "modal.openaddacknowledgementmodal",
+  RefreshStudentList: "app.refreshstudentlist",
+  Search: "app.Search",
 } as const;
 
 type eventNameArg = (typeof AppEvents)[keyof typeof AppEvents];
-type eventCallbackArg = (arg: Event) => void;
+type eventCallbackArg = (arg: Event & { detail: any }) => void;
 
 export const useEvent = (
   userEvent: eventNameArg,
   callback: eventCallbackArg
 ) => {
   useEffect(() => {
-    window.addEventListener(userEvent, callback);
-    return () => window.removeEventListener(userEvent, callback);
+    window.addEventListener(userEvent, callback as EventListener);
+    return () =>
+      window.removeEventListener(userEvent, callback as EventListener);
   }, []);
 };
 
-export const emitEvent = (eventName: eventNameArg, detail?: unknown) => {
+export const emitEvent = (eventName: eventNameArg, detail?: any) => {
   window.dispatchEvent(new CustomEvent(eventName, { detail }));
 };

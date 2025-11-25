@@ -18,7 +18,7 @@ import {
 
 export const CreateStudentModal: FC = () => {
   const [createStudent, { mutating }] = useMutation(postStudent);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { formValue, setFormValue, handleChange, addError } =
     useFormModel<CreateStudentRequest>();
 

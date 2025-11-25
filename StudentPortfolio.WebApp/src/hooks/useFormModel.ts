@@ -1,8 +1,10 @@
 import { useCallback, useState } from "react";
 import type { FormModel } from "../types/formModel";
 
-export const useFormModel = <T>() => {
-  const [formValue, setFormValue] = useState<FormModel<T>>({} as FormModel<T>);
+export const useFormModel = <T>(defaultValue?: FormModel<T>) => {
+  const [formValue, setFormValue] = useState<FormModel<T>>(
+    defaultValue as FormModel<T>
+  );
 
   const addError = useCallback((name: keyof T, error: string) => {
     setFormValue((prev) => ({
@@ -26,7 +28,7 @@ export const useFormModel = <T>() => {
 
   const handleChange = (
     name: keyof T,
-    value: string,
+    value: T[typeof name],
     isValid?: boolean,
     error?: string
   ) => {

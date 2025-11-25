@@ -3,6 +3,7 @@ import { Modal as MTNModal } from "@mantine/core";
 import { X } from "lucide-react";
 import type { FC, MouseEventHandler, ReactNode } from "react";
 import { Button } from "../components/Button";
+import { cn } from "../utilities/cs";
 import { IconButton } from "./IconButton";
 import { LoaderSpinner } from "./LoaderSpinner";
 
@@ -15,6 +16,7 @@ interface ModalContentProps
   header?: ReactNode;
   title?: string;
   excludeFooter?: boolean;
+  excludeCloseButton?: boolean;
   submitText?: string;
   cancelText?: string;
   onSubmit?: MouseEventHandler<HTMLButtonElement>;
@@ -24,6 +26,7 @@ interface ModalContentProps
     header?: string;
     footer?: string;
     body?: string;
+    title?: string;
   };
 }
 
@@ -49,6 +52,10 @@ export const ModalRoot: FC<modalRootProps> = ({
       opened={opened}
       onClose={onClose}
       closeOnEscape={closeOnEscape}
+      // classNames={{
+      //   inner: "block! w-fit! h-fit!",
+      //   content: "max-w-100 min-w-80 w-fit",
+      // }}
       className={`${className} h-dvh w-dvw bg-transparent absolute top-0 left-0 flex justify-center items-center ${
         !opened && "hidden"
       }`}
@@ -70,11 +77,15 @@ export const ModalContent: FC<ModalContentProps> = ({
   cancelText = "Cancel",
   onSubmit,
   loading,
+  excludeCloseButton,
 }) => {
   return (
     <MTNModal.Content>
       <div
-        className={`relative bg-white min-h-80 min-w-100 px-8 pt-8 pb-4 grid grid-rows-[min-content_auto_min-content] rounded ${classNames?.content}`}
+        className={cn(
+          "relative grid bg-white max-h-dvh max-w-dvw min-h-80 min-w-100 px-8 pt-8 pb-4 grid-rows-[min-content_minmax(0,1fr)_min-content] rounded",
+          classNames?.content
+        )}
       >
         <LoaderSpinner
           includeBackground
@@ -84,25 +95,31 @@ export const ModalContent: FC<ModalContentProps> = ({
           visible={loading}
         />
         <MTNModal.Header
-          className={`${(title || header) && "mb-5"} ${classNames?.header}`}
+          className={cn({ "mb-5": title || header }, classNames?.header)}
         >
           <>
-            <IconButton
-              className="absolute -top-2 -right-2 z-15 rounded-full bg-slate-200"
-              size="xs"
-              onClick={onClose}
-            >
-              <X />
-            </IconButton>
+            {!excludeCloseButton && (
+              <IconButton
+                className="absolute -top-2 -right-2 z-15 rounded-full bg-slate-200"
+                size="xs"
+                onClick={onClose}
+              >
+                <X className="stroke-3" />
+              </IconButton>
+            )}
             {title && (
-              <MTNModal.Title className="text-lg font-semibold">
+              <MTNModal.Title
+                className={cn("text-lg font-semibold", classNames?.title)}
+              >
                 {title}
               </MTNModal.Title>
             )}
             {header}
           </>
         </MTNModal.Header>
-        <MTNModal.Body className={`flex flex-col ${classNames?.body}`}>
+        <MTNModal.Body
+          className={`flex flex-col overflow-y-auto overflow-x-auto ${classNames?.body}`}
+        >
           {children}
         </MTNModal.Body>
         {!excludeFooter && (
