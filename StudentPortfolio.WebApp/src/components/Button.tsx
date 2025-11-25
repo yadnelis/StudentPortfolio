@@ -24,7 +24,7 @@ export interface ButtonProps extends ComponentProps<"button"> {
 }
 
 const buttonVariants = tv({
-  base: "text-sm p-2 px-3 text-nowrap",
+  base: "p-2 px-3 text-nowrap",
   variants: {
     color: {
       accent: "bg-accent text-secondary font-semibold",

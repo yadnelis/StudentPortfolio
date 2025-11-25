@@ -30,7 +30,7 @@ export function Dropdown<TValue extends dropdownValue>({
   //   if (value != selected) setSelected(value);
   // }, [value]);
   return (
-    <label className="inline-flex flex-col text-sm">
+      <label className="inline-flex flex-col">
       <span className="font-semibold">{label}</span>
       <select
         className={`bg-white hover:bg-slate-50 p-2 border-gray-200 rounded-xs border-2  focus:ring-blue-200/50 focus:ring-2 focus:border-gray-300 outline-none ${

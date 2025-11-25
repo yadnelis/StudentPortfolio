@@ -62,9 +62,9 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
     >
       <div>
         <div className="py-2">
-          <span className="font-bold text-base!">{studentId}</span>
+          <span className="font-bold">{studentId}</span>
           <Dot className="inline-block" />
-          <span className="font-semibold text-base!">{fullName}</span>
+          <span className="font-semibold">{fullName}</span>
         </div>
         {description && (
           <div>

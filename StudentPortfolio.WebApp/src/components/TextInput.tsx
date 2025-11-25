@@ -53,8 +53,9 @@ export const TextInput: FC<TextInputProps> = ({
       {...props}
       component={component}
       classNames={{
+        ...classNames,
         input: cn(
-          `bg-white hover:bg-slate-50 p-2 border-gray-200 rounded-xs border-2 text-sm focus:ring-blue-200/50 focus:ring-2 focus:border-gray-300 outline-none`,
+          `bg-white hover:bg-slate-50 p-2 border-gray-200 rounded-xs border-2 focus:ring-blue-200/50 focus:ring-2 focus:border-gray-300 outline-none`,
           className
         ),
         section: cn(
@@ -62,12 +63,11 @@ export const TextInput: FC<TextInputProps> = ({
           classNames?.section
         ),
         wrapper: cn("relative", classNames?.wrapper),
-        label: cn("font-semibold text-sm", classNames?.label),
-        description: cn("font-normal text-sm", classNames?.sescription),
+        label: cn("font-semibold", classNames?.label),
+        description: cn("font-normal", classNames?.description),
         root: wrapperClassName,
-        error: cn("text-form-error-text text-wrap text-xs", classNames?.error),
+        error: cn("text-form-error-text text-wrap text-sm", classNames?.error),
         required: cn("text-form-required", classNames?.required),
-        ...classNames,
       }}
     />
   );
