@@ -1,3 +1,4 @@
+import { useDidUpdate } from "@mantine/hooks";
 import moment from "moment";
 import { useCallback, type FC } from "react";
 import toast from "react-hot-toast";
@@ -10,15 +11,17 @@ import { TextInput } from "../../components/TextInput";
 import { type MutateFN } from "../../hooks/api";
 import { useFormModel } from "../../hooks/useFormModel";
 import {
-  AcknowledgementType,
+  acknowledgementType,
+  type Acknowledgement,
   type AcknowledgementTypeValues,
-  type getAcknowledgementResponse,
+  type GetAcknowledgementResponse,
   type MutateAcknowledgementRequest,
 } from "../../types/dtos/acknowledgement";
 import type { Student } from "../../types/dtos/student";
 import {
   addErrorsFromResponse,
   formModelToValue,
+  valueToFormModel,
   type FormModel,
 } from "../../types/formModel";
 import { AcknowledgementTypeResc } from "../../utilities/enumResources";
@@ -28,18 +31,20 @@ interface AcknowledgementModalContentProps {
   setOpen: (arg: boolean) => void;
   onClose: () => void;
   student?: Partial<Student>;
-  mutate: MutateFN<MutateAcknowledgementRequest, getAcknowledgementResponse>;
+  mutate: MutateFN<MutateAcknowledgementRequest, GetAcknowledgementResponse>;
   mutating: boolean;
+  acknowledgement?: Acknowledgement;
+  title: string;
 }
 
 export const AcknowledgementModalContent: FC<
   AcknowledgementModalContentProps
-> = ({ onClose, student, mutate, mutating }) => {
+> = ({ onClose, student, mutate, mutating, acknowledgement, title }) => {
   //
   const { formValue, setFormValue, handleChange, validate } =
     useFormModel<MutateAcknowledgementRequest>(
       {
-        type: { value: AcknowledgementType.Internship },
+        type: { value: acknowledgementType.Internship },
         studentId: { value: student?.id },
       },
       validateAcknowledgement
@@ -94,11 +99,15 @@ export const AcknowledgementModalContent: FC<
     });
   }, [formValue]);
 
+  useDidUpdate(() => {
+    if (acknowledgement) setFormValue(valueToFormModel(acknowledgement));
+  }, [acknowledgement]);
+
   return (
     <>
       <ModalContent
         onClose={_onClose}
-        title={`Acknowledge ${student?.fullName ?? "..."}`}
+        title={title}
         header={
           <>
             {student?.institutionalId && (
@@ -128,7 +137,7 @@ export const AcknowledgementModalContent: FC<
                 classNames={{ wrapper: "w-full" }}
                 value={formValue?.type?.value}
                 error={formValue?.type?.error}
-                options={Object.values(AcknowledgementType).map((type) => ({
+                options={Object.values(acknowledgementType).map((type) => ({
                   text: AcknowledgementTypeResc[type],
                   value: type,
                 }))}
@@ -224,7 +233,7 @@ export const AcknowledgementModalContent: FC<
                 }}
               />
             )}
-            {formValue.type?.value === AcknowledgementType.Competition && (
+            {formValue.type?.value === acknowledgementType.Competition && (
               <div className="mt-5">
                 <div className="">Competition Details</div>
                 <div className="ps-2 border-s-2 border-gray-300">

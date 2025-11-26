@@ -1,7 +1,7 @@
 import { type ComponentProps } from "react";
 import { cn } from "../utilities/cs";
 
-type dropdownValue = string | number | readonly string[] | undefined;
+type dropdownValue = string | number;
 
 export interface DropdownOption<TValue extends dropdownValue> {
   text: string;
@@ -21,7 +21,7 @@ interface DropdownProps<TValue extends dropdownValue>
   wrapperClassName?: string;
   classNames?: Partial<Record<classNames, string>>;
   options: DropdownOption<TValue>[];
-  value: TValue;
+  value?: TValue;
   label?: string;
   error?: string;
 }
@@ -50,7 +50,11 @@ export function Dropdown<TValue extends dropdownValue>({
           {...rest}
         >
           {options.map((opt) => (
-            <option value={opt.value} className={cn(classNames?.option)}>
+            <option
+              value={opt.value}
+              className={cn(classNames?.option)}
+              key={opt.value}
+            >
               {opt.text}
             </option>
           ))}

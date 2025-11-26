@@ -35,3 +35,10 @@ export const formModelToValue = <T>(formModel: FormModel<T>): T => {
     return prev;
   }, {} as T);
 };
+
+export const valueToFormModel = <T extends object>(entity: T): FormModel<T> => {
+  return Object.keys(entity).reduce<FormModel<T>>((prev, key) => {
+    prev[key as keyof T] = { value: entity[key as keyof T] as T[keyof T] };
+    return prev;
+  }, {} as FormModel<T>);
+};

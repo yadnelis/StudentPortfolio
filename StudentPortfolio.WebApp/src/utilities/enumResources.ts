@@ -1,5 +1,5 @@
 import {
-  AcknowledgementType,
+  acknowledgementType,
   type AcknowledgementTypeValues,
 } from "../types/dtos/acknowledgement";
 
@@ -7,10 +7,10 @@ export const AcknowledgementTypeResc: Record<
   AcknowledgementTypeValues,
   string
 > = {
-  [AcknowledgementType.Other]: "Other Event",
-  [AcknowledgementType.Investigation]: "Investigation",
-  [AcknowledgementType.Competition]: "Competition",
-  [AcknowledgementType.Internship]: "Internship",
-  [AcknowledgementType.Athlete]: "Athletic Participation",
-  [AcknowledgementType.Lidership]: "Demonstration of Lidership",
+  [acknowledgementType.Other]: "Other Event",
+  [acknowledgementType.Investigation]: "Investigation",
+  [acknowledgementType.Competition]: "Competition",
+  [acknowledgementType.Internship]: "Internship",
+  [acknowledgementType.Athlete]: "Athletic Participation",
+  [acknowledgementType.Lidership]: "Demonstration of Lidership",
 } as const;

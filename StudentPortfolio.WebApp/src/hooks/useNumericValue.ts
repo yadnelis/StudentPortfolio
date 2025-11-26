@@ -7,10 +7,15 @@ export const useNumericValue = (
   min: number = Number.MIN_SAFE_INTEGER,
   max: number = Number.MAX_SAFE_INTEGER
 ) => {
-  const [actualValue, setActualValue] = useState<number | undefined>(value);
-  const [displayValue, setDisplayValue] = useState<string | undefined>(
-    getDisplayValue(value, format)
+  const defaultValue = value ?? (min > 0 ? min : 0);
+  const [actualValue, setActualValue] = useState<number | undefined>(
+    defaultValue
   );
+
+  const [displayValue, setDisplayValue] = useState<string | undefined>(
+    getDisplayValue(defaultValue, format)
+  );
+
   const _setActualValue = useCallback(
     (value?: number | string) => {
       if (value === null || value === undefined || value === "") {

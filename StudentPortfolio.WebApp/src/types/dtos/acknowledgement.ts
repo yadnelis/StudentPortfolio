@@ -3,12 +3,12 @@ import type { Student } from "./student";
 
 export interface Acknowledgement {
   id: string;
-  studentId: number;
+  studentId: string;
   type: AcknowledgementTypeValues;
   place: string;
   description: string;
-  startDate: Date;
-  endDate?: Date;
+  startDate: string;
+  endDate?: string;
   otherType?: string;
   competitionPosition?: number;
   competitionName?: string;
@@ -16,26 +16,19 @@ export interface Acknowledgement {
   student: Student;
 }
 
-export interface MutateAcknowledgementRequest {
-  studentId?: string;
-  type?: AcknowledgementTypeValues;
-  place?: string;
-  description?: string;
-  startDate?: string;
-  endDate?: string;
-  otherType?: string;
-  email?: string;
-  competitionPosition?: number;
-  competitionName?: string;
-  studentOrganizatonName?: string;
-}
-
+export type MutateAcknowledgementRequest = Partial<
+  Omit<Acknowledgement, "Id" | "student">
+>;
 export type CreateAcknowledgementRequest = MutateAcknowledgementRequest;
-export type UpdateAcknowledgementRequest = MutateAcknowledgementRequest;
-export type getAcknowledgementResponse = BaseResponse<Acknowledgement>;
-export type getAcknowledgementsResponse = BaseResponse<Acknowledgement[]>;
+export type UpdateAcknowledgementRequest = Omit<
+  MutateAcknowledgementRequest,
+  "studentId"
+>;
 
-export const AcknowledgementType = {
+export type GetAcknowledgementResponse = BaseResponse<Acknowledgement>;
+export type GetAcknowledgementsResponse = BaseResponse<Acknowledgement[]>;
+
+export const acknowledgementType = {
   Other: 0,
   Investigation: 1,
   Competition: 2,
@@ -45,4 +38,4 @@ export const AcknowledgementType = {
 } as const;
 
 export type AcknowledgementTypeValues =
-  (typeof AcknowledgementType)[keyof typeof AcknowledgementType];
+  (typeof acknowledgementType)[keyof typeof acknowledgementType];

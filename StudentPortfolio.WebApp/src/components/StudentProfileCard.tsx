@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, Dot, Plus } from "lucide-react";
+import { ChevronDown, ChevronUp, Dot, Pencil, Plus, Trash } from "lucide-react";
 import moment from "moment";
 import {
   Children,
@@ -10,32 +10,28 @@ import {
   type ReactNode,
 } from "react";
 import {
-  AcknowledgementType,
+  acknowledgementType,
   type Acknowledgement,
 } from "../types/dtos/acknowledgement";
+import type { Student } from "../types/dtos/student";
 import { Button } from "./Button";
+import { IconButton } from "./IconButton";
 
 interface AcknowledgementProps
-  extends Omit<
-    Acknowledgement,
-    "StudentId" | "Student" | "Id" | "Description"
-  > {
+  extends Omit<Acknowledgement, "studentId" | "student" | "id"> {
   children?: string | string[];
 }
 
 interface StudentProfileCardProps
   extends Omit<ComponentProps<"div">, "className"> {
   institutionalId?: string;
-  fullName?: string;
-  description?: string;
   children: ReactNode;
   onClickAddAcknowledgement: MouseEventHandler<HTMLButtonElement>;
+  student: Student;
 }
 
 export const StudentProfileCard: FC<StudentProfileCardProps> = ({
-  institutionalId: studentId,
-  fullName,
-  description,
+  student,
   children,
   onClickAddAcknowledgement,
   ...props
@@ -58,21 +54,16 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
   return (
     <div
       {...props}
-      className="px-10 w-[min(90vw,1200px)] py-7 bg-slate-50 flex gap-10 flex-col shadow-lg max-w-300 outline-accent hover:outline-2 group/studentcard transition-all transition-200"
+      className="px-10 w-[min(90vw,1200px)] py-7 space-y-2.5 bg-slate-50 shadow-lg max-w-300 outline-accent hover:outline-2 group/studentcard transition-all transition-200"
     >
       <div>
         <div className="py-2">
-          <span className="font-bold">{studentId}</span>
+          <span className="font-bold">{student?.institutionalId}</span>
           <Dot className="inline-block" />
-          <span className="font-semibold">{fullName}</span>
+          <span className="font-semibold">{student?.fullName}</span>
         </div>
-        {description && (
-          <div>
-            <p>{description}</p>
-          </div>
-        )}
       </div>
-      {visibleChildren}
+      <div className="flex flex-col gap-10">{visibleChildren}</div>
       {childrenLenght > 2 && !showHidden && (
         <div className="text-center text-gray-400 font-semibold ">
           Show {childrenLenght} more
@@ -89,7 +80,11 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
             )}
           </Button>
         )}
-        <Button color={"accent"} onClick={onClickAddAcknowledgement}>
+        <Button
+          color={"accent"}
+          onClick={onClickAddAcknowledgement}
+          className="sticky bottom-16"
+        >
           <span className="flex items-center gap-2">
             <Plus className="inline size-5" /> Acknowledge
           </span>
@@ -107,25 +102,44 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
   otherType: OtherType,
   children,
   description,
+  competitionName,
+  competitionPosition,
+  studentOrganizatonName,
+
   ...props
 }) => {
   return (
-    <div {...props} className=" bg-slate-50 ">
-      <p className="border-b border-slate-300 px-1 py-2">
-        <span className="text-gray-700 bg-gray-100 px-2 py-1 rounded-4xl">
-          {StartDate && <span>{moment(StartDate).format("YYYY/MM/DD")}</span>}
-          {EndDate && <span> - {moment(EndDate).format("YYYY/MM/DD")}</span>}
-        </span>{" "}
-        <span className="text-primary-500 font-semibold">
-          {Type === 0
-            ? OtherType
-            : Object.entries(AcknowledgementType).find(
-                (x) => x[1] === Type
-              )?.[0]}
-        </span>{" "}
-        {Place && <span className="">at {Place}</span>}
-      </p>
-      {description && <p className="bg-slate-100 p-3">{description}</p>}
+    <div {...props} className=" bg-slate-50 group">
+      <div className="border-b border-slate-300 px-1 py-2 flex justify-between min-h-11">
+        <p className="">
+          <span className="text-gray-700 bg-gray-100 px-2 py-1 rounded-4xl">
+            {StartDate && <span>{moment(StartDate).format("YYYY/MM/DD")}</span>}
+            {EndDate && <span> - {moment(EndDate).format("YYYY/MM/DD")}</span>}
+          </span>
+          <span className="text-primary-500 font-semibold">
+            {Type === 0
+              ? OtherType
+              : Object.entries(acknowledgementType).find(
+                  (x) => x[1] === Type
+                )?.[0]}
+          </span>{" "}
+          {Place && <span className="">at {Place}</span>}
+        </p>
+        <div className="space-x-3 flex-nowrap w-fit group-hover:opacity-100 opacity-0 transition-all transition-200">
+          <IconButton onClick={() => {}} variant="secondary">
+            <Pencil />
+          </IconButton>
+          Edit
+          <IconButton onClick={() => {}} variant="danger">
+            <Trash />
+          </IconButton>
+        </div>
+      </div>
+      {description && (
+        <p className="bg-slate-100 p-3 text-wrap overflow-hidden break-all">
+          {description}
+        </p>
+      )}
       {children && <p className="bg-slate-100 p-3">{children}</p>}
     </div>
   );

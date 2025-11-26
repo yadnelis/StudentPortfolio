@@ -24,9 +24,7 @@ export const StudentList: FC = () => {
       {students?.map((st) => (
         <StudentProfileCard
           key={st.id}
-          {...st}
-          fullName={st.fullName}
-          institutionalId={st.institutionalId}
+          student={st}
           onClickAddAcknowledgement={() => {
             emitEvent(AppEvents.OpenCreateAcknowledgementModal, st);
           }}
