@@ -1,20 +1,17 @@
 import { useDidUpdate } from "@mantine/hooks";
 import moment from "moment";
 import { useCallback, type FC } from "react";
-import toast from "react-hot-toast";
 import { Dropdown } from "../../components/Dropdown";
 import { MaskedInput } from "../../components/MaskedInput";
 import { ModalContent } from "../../components/Modal";
 import { NumericInput } from "../../components/NumericInput";
 import { TextArea } from "../../components/Textarea";
 import { TextInput } from "../../components/TextInput";
-import { type MutateFN } from "../../hooks/api";
 import { useFormModel } from "../../hooks/useFormModel";
 import {
   acknowledgementType,
   type Acknowledgement,
   type AcknowledgementTypeValues,
-  type GetAcknowledgementResponse,
   type MutateAcknowledgementRequest,
 } from "../../types/dtos/acknowledgement";
 import type { Student } from "../../types/dtos/student";
@@ -27,19 +24,36 @@ import {
 import { AcknowledgementTypeResc } from "../../utilities/enumResources";
 import { validateAcknowledgement } from "../../utilities/validators/acknowledgementValidators";
 
+export type acknowledgemenetModalMutatefn = (
+  args: MutateAcknowledgementRequest,
+  options: {
+    onSuccess: () => void;
+    onError: (e: any) => void;
+  }
+) => Promise<void>;
+
 interface AcknowledgementModalContentProps {
   setOpen: (arg: boolean) => void;
   onClose: () => void;
   student?: Partial<Student>;
-  mutate: MutateFN<MutateAcknowledgementRequest, GetAcknowledgementResponse>;
+  mutate: acknowledgemenetModalMutatefn;
   mutating: boolean;
-  acknowledgement?: Acknowledgement;
+  acknowledgement?: Partial<Acknowledgement>;
   title: string;
+  submitText: string;
 }
 
 export const AcknowledgementModalContent: FC<
   AcknowledgementModalContentProps
-> = ({ onClose, student, mutate, mutating, acknowledgement, title }) => {
+> = ({
+  onClose,
+  student,
+  mutate,
+  mutating,
+  acknowledgement,
+  title,
+  submitText,
+}) => {
   //
   const { formValue, setFormValue, handleChange, validate } =
     useFormModel<MutateAcknowledgementRequest>(
@@ -62,39 +76,15 @@ export const AcknowledgementModalContent: FC<
     const payload = formModelToValue(formValue);
     payload.studentId = student?.id;
 
-    mutate(payload, {
+    await mutate(payload, {
       onSuccess: () => {
-        toast.success("Acknowledgement created successfully!", {
-          position: "bottom-center",
-        });
-
         _onClose();
       },
       onError: (e) => {
-        if (e.status === 422) {
-          toast.error(
-            "Error creating acknowledgement. Please review form validation errors.",
-            {
-              position: "bottom-center",
-            }
+        if (e?.response?.data?.errors)
+          setFormValue((prev) =>
+            addErrorsFromResponse(prev, e?.response?.data)
           );
-
-          if (e?.response?.data?.errors)
-            setFormValue((prev) =>
-              addErrorsFromResponse(prev, e?.response?.data)
-            );
-        } else if (e.status === 400) {
-          toast.error(
-            "Could not create acknowledgement due to errors in the values.",
-            {
-              position: "bottom-center",
-            }
-          );
-        } else {
-          toast.error("Unexpected error occured.", {
-            position: "bottom-center",
-          });
-        }
       },
     });
   }, [formValue]);
@@ -122,7 +112,7 @@ export const AcknowledgementModalContent: FC<
             )}
           </>
         }
-        submitText="Create Acknowledgement"
+        submitText={submitText}
         classNames={{ header: "mb-9", body: "overflow-auto" }}
         onSubmit={post}
         loading={mutating}

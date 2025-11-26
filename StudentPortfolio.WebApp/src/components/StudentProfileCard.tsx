@@ -9,6 +9,9 @@ import {
   type MouseEventHandler,
   type ReactNode,
 } from "react";
+import { deleteAcknowledgement } from "../api/acknowledgements";
+import { useMutation } from "../hooks/api";
+import { AppEvents, emitEvent } from "../hooks/useEvent";
 import {
   acknowledgementType,
   type Acknowledgement,
@@ -17,9 +20,10 @@ import type { Student } from "../types/dtos/student";
 import { Button } from "./Button";
 import { IconButton } from "./IconButton";
 
-interface AcknowledgementProps
-  extends Omit<Acknowledgement, "studentId" | "student" | "id"> {
+interface AcknowledgementProps {
   children?: string | string[];
+  acknowledgement: Acknowledgement;
+  student: Partial<Student>;
 }
 
 interface StudentProfileCardProps
@@ -95,42 +99,60 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
 };
 
 export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
-  startDate: StartDate,
-  endDate: EndDate,
-  type: Type,
-  place: Place,
-  otherType: OtherType,
+  acknowledgement,
+  student,
   children,
-  description,
-  competitionName,
-  competitionPosition,
-  studentOrganizatonName,
-
   ...props
 }) => {
+  const {
+    id,
+    startDate,
+    endDate,
+    type,
+    place,
+    otherType,
+    description,
+    competitionName,
+    competitionPosition,
+    studentOrganizatonName,
+  } = acknowledgement;
+  const [removeAcknowledgement, { mutating }] = useMutation(
+    deleteAcknowledgement
+  );
+
   return (
     <div {...props} className=" bg-slate-50 group">
       <div className="border-b border-slate-300 px-1 py-2 flex justify-between min-h-11">
         <p className="">
           <span className="text-gray-700 bg-gray-100 px-2 py-1 rounded-4xl">
-            {StartDate && <span>{moment(StartDate).format("YYYY/MM/DD")}</span>}
-            {EndDate && <span> - {moment(EndDate).format("YYYY/MM/DD")}</span>}
+            {startDate && <span>{moment(startDate).format("YYYY/MM/DD")}</span>}
+            {endDate && <span> - {moment(endDate).format("YYYY/MM/DD")}</span>}
           </span>
           <span className="text-primary-500 font-semibold">
-            {Type === 0
-              ? OtherType
+            {type === 0
+              ? otherType
               : Object.entries(acknowledgementType).find(
-                  (x) => x[1] === Type
+                  (x) => x[1] === type
                 )?.[0]}
           </span>{" "}
-          {Place && <span className="">at {Place}</span>}
+          {place && <span className="">at {place}</span>}
         </p>
         <div className="space-x-3 flex-nowrap w-fit group-hover:opacity-100 opacity-0 transition-all transition-200">
-          <IconButton onClick={() => {}} variant="secondary">
+          <IconButton
+            onClick={() =>
+              emitEvent(AppEvents.OpenUpdateAcknowledgementModal, {
+                student,
+                acknowledgement,
+              })
+            }
+            variant="secondary"
+          >
             <Pencil />
           </IconButton>
-          Edit
-          <IconButton onClick={() => {}} variant="danger">
+          <IconButton
+            onClick={() => removeAcknowledgement([id])}
+            variant="danger"
+          >
             <Trash />
           </IconButton>
         </div>

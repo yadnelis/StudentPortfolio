@@ -12,15 +12,15 @@ export type MutateFN<TArgs, TResult> = (
   options?: options<TResult, void> | undefined
 ) => void;
 
-export const useMutation = <TArgs, TResult>(
-  fn: (args: TArgs) => Promise<TResult>
+export const useMutation = <TArgs extends [...any], TResult>(
+  fn: (...args: TArgs) => Promise<TResult>
 ) => {
   const [mutating, setMutating] = useState(false);
 
   const mutate = useThrottledCallback(
     async (data: TArgs, options?: options<TResult>) => {
       setMutating(true);
-      fn(data)
+      await fn(...data)
         .then(options?.onSuccess)
         .catch(options?.onError)
         .finally(() => {

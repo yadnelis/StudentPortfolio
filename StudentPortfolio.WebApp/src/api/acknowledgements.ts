@@ -32,9 +32,16 @@ export const postAcknowledgement = async (
 };
 
 export const putAcknowledgement = async (
+  id: string,
   args?: UpdateAcknowledgementRequest
 ) => {
-  const url = controller;
-  var res = await axios.post<GetAcknowledgementResponse>(url, args);
+  const url = controller + "/" + id;
+  var res = await axios.put<GetAcknowledgementResponse>(url, args);
+  return res.data;
+};
+
+export const deleteAcknowledgement = async (id: string) => {
+  const url = controller + "/" + id;
+  var res = await axios.delete<GetAcknowledgementResponse>(url);
   return res.data;
 };

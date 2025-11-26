@@ -30,7 +30,11 @@ export const StudentList: FC = () => {
           }}
         >
           {st.acknowledgements?.map((ack) => (
-            <AcknowledgementListItem key={ack.id} {...ack} />
+            <AcknowledgementListItem
+              key={ack.id}
+              acknowledgement={ack}
+              student={st}
+            />
           ))}
         </StudentProfileCard>
       ))}

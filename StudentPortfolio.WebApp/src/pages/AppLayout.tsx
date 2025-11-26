@@ -6,6 +6,7 @@ import { Outlet } from "react-router";
 import { Layout } from "../components/LayoutComponents";
 import { CreateAcknowledgementModal } from "./portals/CreateAcknowledgementModal";
 import { CreateStudentModal } from "./portals/CreateStudentModal";
+import { UpdateAcknowledgementModal } from "./portals/UpdateAcknowledgementModal";
 
 export default function AppLayout() {
   return (
@@ -19,6 +20,7 @@ export default function AppLayout() {
         <Layout.Portals>
           <CreateStudentModal />
           <CreateAcknowledgementModal />
+          <UpdateAcknowledgementModal />
         </Layout.Portals>
         <Toaster />
       </MantineProvider>

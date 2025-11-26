@@ -2,7 +2,8 @@ import { useEffect } from "react";
 
 export const AppEvents = {
   OpenCreateUserModal: "modal.opencreateusermodal",
-  OpenCreateAcknowledgementModal: "modal.openaddacknowledgementmodal",
+  OpenCreateAcknowledgementModal: "modal.opencreateacknowledgementmodal",
+  OpenUpdateAcknowledgementModal: "modal.openupdateacknowledgementmodal",
   RefreshStudentList: "app.refreshstudentlist",
   Search: "app.Search",
 } as const;

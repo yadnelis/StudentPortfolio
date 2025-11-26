@@ -15,7 +15,7 @@ export function validateAcknowledgement<T extends MutateAcknowledgementRequest>(
   let validProperties = { startDate: true, endDate: true };
 
   if (
-    formValue.startDate &&
+    formValue.startDate?.value &&
     !moment(formValue.startDate.value, "YYYY-MM-DD", true).isValid()
   ) {
     valid = false;
@@ -25,11 +25,11 @@ export function validateAcknowledgement<T extends MutateAcknowledgementRequest>(
       "Please enter a date in the format YYYY-MM-DD, or leave the field empty"
     );
   }
-
   if (
-    formValue.endDate &&
+    formValue.endDate?.value &&
     !moment(formValue.endDate.value, "YYYY-MM-DD", true).isValid()
   ) {
+    console.log(formValue.endDate?.value);
     valid = false;
     validProperties.endDate = false;
     addError(
