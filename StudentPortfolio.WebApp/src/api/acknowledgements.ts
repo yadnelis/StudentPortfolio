@@ -4,7 +4,7 @@ import axios from "axios";
 
 import type {
   CreateAcknowledgementRequest,
-  getAcknowledgementsResponse,
+  getAcknowledgementResponse,
   UpdateAcknowledgementRequest,
 } from "../types/dtos/acknowledgement";
 
@@ -19,7 +19,7 @@ const controller =
 
 export const getAcknowledgement = async (id: string) => {
   const url = `${controller}/${id}`;
-  var res = await axios.get<getAcknowledgementsResponse>(url);
+  var res = await axios.get<getAcknowledgementResponse>(url);
   return res.data;
 };
 
@@ -27,7 +27,7 @@ export const postAcknowledgement = async (
   args?: CreateAcknowledgementRequest
 ) => {
   const url = controller;
-  var res = await axios.post<getAcknowledgementsResponse>(url, args);
+  var res = await axios.post<getAcknowledgementResponse>(url, args);
   return res.data;
 };
 
@@ -35,6 +35,6 @@ export const updateAcknowledgement = async (
   args?: UpdateAcknowledgementRequest
 ) => {
   const url = controller;
-  var res = await axios.post<getAcknowledgementsResponse>(url, args);
+  var res = await axios.post<getAcknowledgementResponse>(url, args);
   return res.data;
 };

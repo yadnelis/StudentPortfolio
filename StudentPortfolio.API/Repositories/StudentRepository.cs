@@ -24,7 +24,7 @@ namespace StudentPortfolio.API.Repositories
     public class StudentsRepository(StudentPortfolioContext ctx)
         : BaseRepo<Student>(ctx), IStudentsRepository
     {
-        public override IQueryable<Student> IncludeRelatedEntities(IQueryable<Student> query)
+        public override IQueryable<Student> IncludeRelatedEntities(IQueryable<Student> query)       
             => query.Include(x => x.Acknowledgements);
 
         public IQueryable<GetStudentResponse> Query(ODataQueryOptions<Student> opts)

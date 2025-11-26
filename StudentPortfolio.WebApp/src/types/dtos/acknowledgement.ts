@@ -16,7 +16,7 @@ export interface Acknowledgement {
   student: Student;
 }
 
-export interface CreateAcknowledgementRequest {
+export interface MutateAcknowledgementRequest {
   studentId?: string;
   type?: AcknowledgementTypeValues;
   place?: string;
@@ -30,20 +30,8 @@ export interface CreateAcknowledgementRequest {
   studentOrganizatonName?: string;
 }
 
-export interface UpdateAcknowledgementRequest {
-  studentId?: string;
-  type?: AcknowledgementTypeValues;
-  place?: string;
-  description?: string;
-  startDate?: string;
-  endDate?: string;
-  otherType?: string;
-  email?: string;
-  competitionPosition?: string;
-  competitionName?: string;
-  studentOrganizatonName?: string;
-}
-
+export type CreateAcknowledgementRequest = MutateAcknowledgementRequest;
+export type UpdateAcknowledgementRequest = MutateAcknowledgementRequest;
 export type getAcknowledgementResponse = BaseResponse<Acknowledgement>;
 export type getAcknowledgementsResponse = BaseResponse<Acknowledgement[]>;
 

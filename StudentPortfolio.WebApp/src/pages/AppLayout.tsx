@@ -4,7 +4,7 @@ import { MantineProvider } from "@mantine/core";
 import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router";
 import { Layout } from "../components/LayoutComponents";
-import { CreateAcknowledgementModal } from "./portals/CreateAcknowledgementModalContent";
+import { CreateAcknowledgementModal } from "./portals/CreateAcknowledgementModal";
 import { CreateStudentModal } from "./portals/CreateStudentModal";
 
 export default function AppLayout() {

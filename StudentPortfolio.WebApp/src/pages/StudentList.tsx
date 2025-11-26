@@ -28,11 +28,7 @@ export const StudentList: FC = () => {
           fullName={st.fullName}
           institutionalId={st.institutionalId}
           onClickAddAcknowledgement={() => {
-            emitEvent(AppEvents.OpenCreateAcknowledgementModal, {
-              fullName: st.fullName,
-              institutionalId: st.institutionalId,
-              id: st.id,
-            });
+            emitEvent(AppEvents.OpenCreateAcknowledgementModal, st);
           }}
         >
           {st.acknowledgements?.map((ack) => (

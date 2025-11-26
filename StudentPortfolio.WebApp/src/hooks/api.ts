@@ -7,6 +7,11 @@ interface options<TResult, TErrorResult = void> {
   onError?: (reason: any) => TErrorResult;
 }
 
+export type MutateFN<TArgs, TResult> = (
+  data: TArgs,
+  options?: options<TResult, void> | undefined
+) => void;
+
 export const useMutation = <TArgs, TResult>(
   fn: (args: TArgs) => Promise<TResult>
 ) => {
