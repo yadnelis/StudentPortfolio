@@ -3,8 +3,8 @@ import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
 import { AcknowledgementApi } from "../../api/AcknowledgementApi";
 import { ModalRoot } from "../../components/Modal";
-import { useMutation } from "../../hooks/api";
 import { AppEvents, useEvent } from "../../hooks/useEvent";
+import { useMutation } from "../../hooks/useMutation";
 import type { Student } from "../../types/dtos/student";
 import {
   AcknowledgementModalContent,

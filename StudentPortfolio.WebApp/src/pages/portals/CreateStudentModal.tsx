@@ -6,9 +6,9 @@ import { StudentApi } from "../../api/StudentApi";
 import { MaskedInput } from "../../components/MaskedInput";
 import { ModalContent, ModalRoot } from "../../components/Modal";
 import { TextInput } from "../../components/TextInput";
-import { useMutation } from "../../hooks/api";
 import { AppEvents, useEvent } from "../../hooks/useEvent";
 import { useFormModel } from "../../hooks/useFormModel";
+import { useMutation } from "../../hooks/useMutation";
 import type { CreateStudentRequest } from "../../types/dtos/student";
 import {
   addErrorsFromResponse,
