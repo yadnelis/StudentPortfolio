@@ -87,7 +87,7 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
         <Button
           color={"accent"}
           onClick={onClickAddAcknowledgement}
-          className="sticky bottom-16"
+          className="mt-5 group-hover/studentcard:visible invisible"
         >
           <span className="flex items-center gap-2">
             <Plus className="inline size-5" /> Acknowledge
