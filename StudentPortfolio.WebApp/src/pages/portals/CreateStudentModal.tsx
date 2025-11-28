@@ -2,7 +2,7 @@ import moment from "moment";
 import { useCallback, useState, type FC } from "react";
 import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
-import { postStudent } from "../../api/students";
+import { StudentApi } from "../../api/StudentApi";
 import { MaskedInput } from "../../components/MaskedInput";
 import { ModalContent, ModalRoot } from "../../components/Modal";
 import { TextInput } from "../../components/TextInput";
@@ -17,7 +17,7 @@ import {
 } from "../../types/formModel";
 
 export const CreateStudentModal: FC = () => {
-  const [createStudent, { mutating }] = useMutation(postStudent);
+  const [createStudent, { mutating }] = useMutation(StudentApi.create);
   const [open, setOpen] = useState(false);
   const { formValue, setFormValue, handleChange, addError } =
     useFormModel<CreateStudentRequest>();
@@ -62,7 +62,7 @@ export const CreateStudentModal: FC = () => {
     const valid = validate();
     if (!valid) return;
     const payload = formModelToValue(formValue);
-    createStudent(payload, {
+    createStudent([payload], {
       onSuccess: () => {
         toast.success("Student created successfully!", {
           position: "bottom-center",

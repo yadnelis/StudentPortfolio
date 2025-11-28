@@ -1,7 +1,7 @@
 import { useCallback, useState, type FC } from "react";
 import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
-import { putAcknowledgement } from "../../api/acknowledgements";
+import { AcknowledgementApi } from "../../api/AcknowledgementApi";
 import { ModalRoot } from "../../components/Modal";
 import { useMutation } from "../../hooks/api";
 import { AppEvents, useEvent } from "../../hooks/useEvent";
@@ -14,7 +14,9 @@ import {
 
 export const UpdateAcknowledgementModal: FC = () => {
   const [open, setOpen] = useState(false);
-  const [updateAcknowledgement, { mutating }] = useMutation(putAcknowledgement);
+  const [updateAcknowledgement, { mutating }] = useMutation(
+    AcknowledgementApi.update
+  );
 
   const [student, setStudent] = useState<Partial<Student>>({});
   const [acknowledgement, setAcknoledgement] = useState<
@@ -26,7 +28,6 @@ export const UpdateAcknowledgementModal: FC = () => {
   }, []);
 
   useEvent(AppEvents.OpenUpdateAcknowledgementModal, (e) => {
-    console.log(e.detail);
     setOpen(true);
     setStudent(e.detail?.student);
     setAcknoledgement(e.detail?.acknowledgement);

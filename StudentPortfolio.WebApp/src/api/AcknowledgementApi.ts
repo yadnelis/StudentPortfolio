@@ -17,31 +17,33 @@ const controller =
 //   return res.data;
 // };
 
-export const getAcknowledgement = async (id: string) => {
+const get = async (id: string) => {
   const url = `${controller}/${id}`;
   var res = await axios.get<GetAcknowledgementResponse>(url);
   return res.data;
 };
 
-export const postAcknowledgement = async (
-  args?: CreateAcknowledgementRequest
-) => {
+const create = async (args?: CreateAcknowledgementRequest) => {
   const url = controller;
   var res = await axios.post<GetAcknowledgementResponse>(url, args);
   return res.data;
 };
 
-export const putAcknowledgement = async (
-  id: string,
-  args?: UpdateAcknowledgementRequest
-) => {
+const update = async (id: string, args?: UpdateAcknowledgementRequest) => {
   const url = controller + "/" + id;
   var res = await axios.put<GetAcknowledgementResponse>(url, args);
   return res.data;
 };
 
-export const deleteAcknowledgement = async (id: string) => {
+const remove = async (id: string) => {
   const url = controller + "/" + id;
   var res = await axios.delete<GetAcknowledgementResponse>(url);
   return res.data;
+};
+
+export const AcknowledgementApi = {
+  get,
+  create,
+  update,
+  remove,
 };

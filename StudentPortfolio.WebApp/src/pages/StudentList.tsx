@@ -1,6 +1,6 @@
 import { useListState } from "@mantine/hooks";
 import { useEffect, type FC } from "react";
-import { getStudents } from "../api/students";
+import { StudentApi } from "../api/StudentApi";
 import {
   AcknowledgementListItem,
   StudentProfileCard,
@@ -10,12 +10,13 @@ import type { Student } from "../types/dtos/student";
 
 export const StudentList: FC = () => {
   const [students, studentHandlers] = useListState<Student>();
-  useEffect(() => {
-    const get = async () => {
-      const students = await getStudents();
-      studentHandlers.setState(students.entity);
-    };
 
+  const get = async () => {
+    const students = await StudentApi.getAll();
+    studentHandlers.setState(students.entity);
+  };
+
+  useEffect(() => {
     get();
   }, []);
 

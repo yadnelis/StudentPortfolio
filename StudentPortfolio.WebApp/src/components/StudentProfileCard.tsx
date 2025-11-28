@@ -9,7 +9,7 @@ import {
   type MouseEventHandler,
   type ReactNode,
 } from "react";
-import { deleteAcknowledgement } from "../api/acknowledgements";
+import { AcknowledgementApi } from "../api/AcknowledgementApi";
 import { useMutation } from "../hooks/api";
 import { AppEvents, emitEvent } from "../hooks/useEvent";
 import {
@@ -117,7 +117,7 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
     studentOrganizatonName,
   } = acknowledgement;
   const [removeAcknowledgement, { mutating }] = useMutation(
-    deleteAcknowledgement
+    AcknowledgementApi.remove
   );
 
   return (
