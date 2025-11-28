@@ -1,7 +1,7 @@
 import { useEffect, useState, type ComponentProps, type FC } from "react";
 
 interface LoaderSpinnerProps extends ComponentProps<"i"> {
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
   delay?: number;
   visible?: boolean;
   includeBackground?: boolean;
@@ -22,6 +22,8 @@ export const LoaderSpinner: FC<LoaderSpinnerProps> = ({
   const [trigger, setTrigger] = useState(false);
   const [_delayedVisible, setVisible] = useState(false);
   const sizeMap: Record<sizes, string> = {
+    "3xs": "w-2 [--spinner-width:2px]",
+    "2xs": "w-4 [--spinner-width:2px]",
     xs: "w-6",
     sm: "w-8",
     md: "w-12",
