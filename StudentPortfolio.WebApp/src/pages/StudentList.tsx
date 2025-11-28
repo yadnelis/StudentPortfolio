@@ -1,10 +1,8 @@
 import { useListState } from "@mantine/hooks";
 import { useEffect, type FC } from "react";
 import { StudentApi } from "../api/StudentApi";
-import {
-  AcknowledgementListItem,
-  StudentProfileCard,
-} from "../components/StudentProfileCard";
+import { AcknowledgementListItem } from "../components/AcknowledgementListItem";
+import { StudentProfileCard } from "../components/StudentProfileCard";
 import { AppEvents, emitEvent } from "../hooks/useEvent";
 import type { Student } from "../types/dtos/student";
 

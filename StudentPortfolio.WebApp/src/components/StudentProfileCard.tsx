@@ -1,5 +1,4 @@
-import { ChevronDown, ChevronUp, Dot, Pencil, Plus, Trash } from "lucide-react";
-import moment from "moment";
+import { ChevronDown, ChevronUp, Dot, Plus } from "lucide-react";
 import {
   Children,
   useMemo,
@@ -9,22 +8,8 @@ import {
   type MouseEventHandler,
   type ReactNode,
 } from "react";
-import { AcknowledgementApi } from "../api/AcknowledgementApi";
-import { useMutation } from "../hooks/api";
-import { AppEvents, emitEvent } from "../hooks/useEvent";
-import {
-  acknowledgementType,
-  type Acknowledgement,
-} from "../types/dtos/acknowledgement";
 import type { Student } from "../types/dtos/student";
 import { Button } from "./Button";
-import { IconButton } from "./IconButton";
-
-interface AcknowledgementProps {
-  children?: string | string[];
-  acknowledgement: Acknowledgement;
-  student: Partial<Student>;
-}
 
 interface StudentProfileCardProps
   extends Omit<ComponentProps<"div">, "className"> {
@@ -94,75 +79,6 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
           </span>
         </Button>
       </div>
-    </div>
-  );
-};
-
-export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
-  acknowledgement,
-  student,
-  children,
-  ...props
-}) => {
-  const {
-    id,
-    startDate,
-    endDate,
-    type,
-    place,
-    otherType,
-    description,
-    competitionName,
-    competitionPosition,
-    studentOrganizatonName,
-  } = acknowledgement;
-  const [removeAcknowledgement, { mutating }] = useMutation(
-    AcknowledgementApi.remove
-  );
-
-  return (
-    <div {...props} className=" bg-slate-50 group">
-      <div className="border-b border-slate-300 px-1 py-2 flex justify-between min-h-11">
-        <p className="">
-          <span className="text-gray-700 bg-gray-100 px-2 py-1 rounded-4xl">
-            {startDate && <span>{moment(startDate).format("YYYY/MM/DD")}</span>}
-            {endDate && <span> - {moment(endDate).format("YYYY/MM/DD")}</span>}
-          </span>
-          <span className="text-primary-500 font-semibold">
-            {type === 0
-              ? otherType
-              : Object.entries(acknowledgementType).find(
-                  (x) => x[1] === type
-                )?.[0]}
-          </span>{" "}
-          {place && <span className="">at {place}</span>}
-        </p>
-        <div className="space-x-3 flex-nowrap w-fit group-hover:opacity-100 opacity-0 transition-all transition-200">
-          <IconButton
-            onClick={() =>
-              emitEvent(AppEvents.OpenUpdateAcknowledgementModal, {
-                student,
-                acknowledgement,
-              })
-            }
-            variant="secondary"
-          >
-            <Pencil />
-          </IconButton>
-          <IconButton
-            onClick={() => removeAcknowledgement([id])}
-            variant="danger"
-          >
-            <Trash />
-          </IconButton>
-        </div>
-      </div>
-      {description && (
-        <p className="bg-slate-100 p-3 text-wrap overflow-hidden break-all">
-          {description}
-        </p>
-      )}
-      {children && <p className="bg-slate-100 p-3">{children}</p>}
     </div>
   );
 };
