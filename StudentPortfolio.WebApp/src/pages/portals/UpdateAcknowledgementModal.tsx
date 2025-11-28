@@ -40,7 +40,7 @@ export const UpdateAcknowledgementModal: FC = () => {
 
       updateAcknowledgement([acknowledgement.id, payload], {
         onSuccess: () => {
-          toast.success("Acknowledgement created successfully!", {
+          toast.success("Acknowledgement updated successfully!", {
             position: "bottom-center",
           });
 
@@ -49,14 +49,14 @@ export const UpdateAcknowledgementModal: FC = () => {
         onError: (e) => {
           if (e.status === 422) {
             toast.error(
-              "Error creating acknowledgement. Please review form validation errors.",
+              "Error updating acknowledgement. Please review form validation errors.",
               {
                 position: "bottom-center",
               }
             );
           } else if (e.status === 400) {
             toast.error(
-              "Could not create acknowledgement due to errors in the values.",
+              "Could not update acknowledgement due to errors in the values.",
               {
                 position: "bottom-center",
               }
