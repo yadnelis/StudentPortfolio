@@ -3,6 +3,7 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { Menu, X } from "lucide-react";
 import { type FC, useEffect, useState } from "react";
 import { TextInput, type TextInputProps } from "../components/TextInput";
+import { useUrlSearchParam } from "../hooks/useUrlSearchParam";
 import { cn } from "../utilities/cs";
 
 export interface SearchInputProps extends TextInputProps {
@@ -15,7 +16,8 @@ export const SearchInput: FC<SearchInputProps> = ({
   className,
   ...props
 }) => {
-  const [value, setValue] = useState("");
+  const [searchValue] = useUrlSearchParam("search");
+  const [value, setValue] = useState<string>(searchValue);
   const [debounced] = useDebouncedValue(value, 300);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export const SearchInput: FC<SearchInputProps> = ({
         onChange?.(e);
       }}
       className={cn(
-        "!bg-slate-100 hover:!bg-white !rounded-lg !border-0 !px-12",
+        "bg-slate-100 hover:bg-white rounded-lg border-0 px-12",
         className
       )}
       {...props}

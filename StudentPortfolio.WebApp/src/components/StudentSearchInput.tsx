@@ -6,6 +6,5 @@ export const StudentSearchInput: FC = () => {
   const onChangeDebounceValue = useCallback((value: string) => {
     emitEvent(AppEvents.Search, { value });
   }, []);
-
   return <SearchInput onChangeDebounceValue={onChangeDebounceValue} />;
 };

@@ -40,7 +40,6 @@ export const StudentList: FC = () => {
   });
 
   useEvent(AppEvents.Search, (e) => {
-    console.log("aaa");
     const query = getQueryFromSearchValue(e.detail?.value);
     history.pushState(null, "", `?search=${e.detail?.value}`);
     studentHandlers.fetch([query]);
@@ -51,7 +50,7 @@ export const StudentList: FC = () => {
       const query = buildQuery({
         filter: { institutionalId: e.detail.institutionalId },
       });
-      history.pushState(null, "", query);
+      history.pushState(null, "", `?search=${e.detail?.institutionalId}`);
       studentHandlers.fetch([query]);
     }
   });
