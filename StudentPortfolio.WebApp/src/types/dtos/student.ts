@@ -14,14 +14,12 @@ export interface Student extends BaseEntity {
   acknowledgements?: Acknowledgement[];
 }
 
-export interface CreateStudentRequest {
-  institutionalId: string;
-  name: string;
-  lastName: string;
-  startDate: string;
-  endDate: string;
-  institution: string;
-}
+export type MutateStudentRequest = Partial<
+  Omit<Student, "Id" | "acknowledgements" | "fullName">
+>;
+
+export type CreateStudentRequest = MutateStudentRequest;
+export type UpdateAcknowledgementRequest = MutateStudentRequest;
 
 export type GetStudentResponse = BaseResponse<Student>;
 export type GetStudentsResponse = BaseResponse<Student[]>;

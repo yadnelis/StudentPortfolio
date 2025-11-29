@@ -3,10 +3,10 @@ import type {
   useFormModelAddError,
   useFormModelRemoveError,
 } from "../../hooks/useFormModel";
-import type { MutateAcknowledgementRequest } from "../../types/dtos/acknowledgement";
+import type { CreateStudentRequest } from "../../types/dtos/student";
 import type { FormModel } from "../../types/formModel";
 
-export function validateAcknowledgement<T extends MutateAcknowledgementRequest>(
+export function validateStudent<T extends CreateStudentRequest>(
   formValue: FormModel<T>,
   addError: useFormModelAddError<T>,
   removeError: useFormModelRemoveError<T>
@@ -16,21 +16,20 @@ export function validateAcknowledgement<T extends MutateAcknowledgementRequest>(
 
   if (
     formValue.startDate?.value &&
-    !moment(formValue.startDate.value, "YYYY-MM-DD", true).isValid()
+    !moment(formValue.startDate?.value, "YYYY-MM-DD", true).isValid()
   ) {
     valid = false;
-    validProperties.startDate = false;
     addError(
       "startDate",
       "Please enter a date in the format YYYY-MM-DD, or leave the field empty"
     );
   }
+
   if (
     formValue.endDate?.value &&
-    !moment(formValue.endDate.value, "YYYY-MM-DD", true).isValid()
+    !moment(formValue.endDate?.value, "YYYY-MM-DD", true).isValid()
   ) {
     valid = false;
-    validProperties.endDate = false;
     addError(
       "endDate",
       "Please enter a date in the format YYYY-MM-DD, or leave the field empty"

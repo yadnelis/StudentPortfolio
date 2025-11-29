@@ -11,7 +11,6 @@ const controller =
   (import.meta.env.VITE_API_URL ?? "MISSING_API_URL") + "/Students";
 
 const getAll = async (args?: string) => {
-  console.log("asdk");
   const url = appendQueryString(controller, args);
   var res = await axios.get<GetStudentsResponse>(url);
   return res.data;

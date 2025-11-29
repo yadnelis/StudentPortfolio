@@ -14,3 +14,15 @@ export const AcknowledgementTypeResc: Record<
   [acknowledgementType.Athlete]: "Athletic Participation",
   [acknowledgementType.Lidership]: "Demonstration of Lidership",
 } as const;
+
+export const AcknowledgementTypePluralResc: Record<
+  AcknowledgementTypeValues,
+  string
+> = {
+  [acknowledgementType.Other]: "Other Event",
+  [acknowledgementType.Investigation]: "Investigations",
+  [acknowledgementType.Competition]: "Competitions",
+  [acknowledgementType.Internship]: "Internships",
+  [acknowledgementType.Athlete]: "Athletic Participations",
+  [acknowledgementType.Lidership]: "Demonstrations of Lidership",
+} as const;

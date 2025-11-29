@@ -31,6 +31,7 @@ export const TextInput: FC<TextInputProps> = ({
   component,
   wrapperClassName,
   classNames,
+  value = "",
   ...props
 }) => {
   if (leftButton) {
@@ -51,6 +52,7 @@ export const TextInput: FC<TextInputProps> = ({
   return (
     <MTextInput
       {...props}
+      value={value}
       component={component}
       classNames={{
         ...classNames,

@@ -40,7 +40,6 @@ export const StudentList: FC = () => {
       AppEvents.AcknowledgementEdited,
     ],
     (e) => {
-      console.log("dsajfh ujo", e);
       search(e.detail?.student?.institutionalId);
     }
   );

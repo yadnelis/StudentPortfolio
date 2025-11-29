@@ -95,7 +95,7 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
         )}
       >
         {/* Time */}
-        <div className="text-gray-700 sm:bg-slate-200 px-2 h-full flex items-center w-fit overflow-hidden">
+        <div className="text-gray-700 sm:bg-slate-200 px-2 h-full flex items-center w-fit ">
           <span className="text-nowrap text-ellipsis">
             {startDate && <span>{moment(startDate).format("YYYY/MM/DD")}</span>}
             {endDate && <span> - {moment(endDate).format("YYYY/MM/DD")}</span>}

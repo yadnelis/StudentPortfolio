@@ -1,4 +1,3 @@
-import moment from "moment";
 import { useCallback, useState, type FC } from "react";
 import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
@@ -15,12 +14,13 @@ import {
   formModelToValue,
   type FormModel,
 } from "../../types/formModel";
+import { validateStudent } from "../../utilities/validators/studentValidators";
 
 export const CreateStudentModal: FC = () => {
   const [createStudent, { mutating }] = useMutation(StudentApi.create);
   const [open, setOpen] = useState(false);
-  const { formValue, setFormValue, handleChange, addError } =
-    useFormModel<CreateStudentRequest>();
+  const { formValue, setFormValue, handleChange, validate } =
+    useFormModel<CreateStudentRequest>(undefined, validateStudent);
 
   const onClose = useCallback(() => {
     setFormValue({} as FormModel<CreateStudentRequest>);
@@ -30,33 +30,6 @@ export const CreateStudentModal: FC = () => {
   useEvent(AppEvents.OpenCreateUserModal, () => {
     setOpen(true);
   });
-
-  const validate = () => {
-    let valid = true;
-    if (
-      formValue.startDate &&
-      !moment(formValue.startDate.value, "YYYY-MM-DD", true).isValid()
-    ) {
-      valid = false;
-      addError(
-        "startDate",
-        "Please enter a date in the format YYYY-MM-DD, or leave the field empty"
-      );
-    }
-
-    if (
-      formValue.endDate &&
-      !moment(formValue.endDate.value, "YYYY-MM-DD", true).isValid()
-    ) {
-      valid = false;
-      addError(
-        "endDate",
-        "Please enter a date in the format YYYY-MM-DD, or leave the field empty"
-      );
-    }
-
-    return valid;
-  };
 
   const post = useCallback(async () => {
     const valid = validate();
@@ -94,6 +67,7 @@ export const CreateStudentModal: FC = () => {
     });
   }, [formValue]);
 
+  console.assert;
   return createPortal(
     <ModalRoot onClose={onClose} opened={open} className="gap-5">
       <ModalContent
@@ -117,10 +91,11 @@ export const CreateStudentModal: FC = () => {
               }}
             />
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 max-sm:flex-wrap">
             <TextInput
               label="Name"
-              className="w-50"
+              className="max-sm:w-full w-50"
+              wrapperClassName="max-sm:w-full"
               placeholder="John"
               value={formValue?.name?.value}
               error={formValue?.name?.error}
@@ -131,7 +106,8 @@ export const CreateStudentModal: FC = () => {
             />
             <TextInput
               label="Last Name"
-              className="w-76"
+              className="max-sm:w-full w-76"
+              wrapperClassName="max-sm:w-full"
               placeholder="Smith"
               value={formValue?.lastName?.value}
               error={formValue?.lastName?.error}
@@ -144,8 +120,8 @@ export const CreateStudentModal: FC = () => {
           <div className="flex gap-3">
             <MaskedInput
               label="Start Date"
-              className="w-63"
-              wrapperClassName="w-63"
+              className="max-sm:w-full w-63"
+              wrapperClassName="max-sm:w-full w-63"
               placeholder="yyyy-mm-dd"
               mask={"YYYY-MM-DD"}
               onBlur={validate}
@@ -162,8 +138,8 @@ export const CreateStudentModal: FC = () => {
             />
             <MaskedInput
               label="End Date"
-              className="w-63"
-              wrapperClassName="w-63"
+              className="max-sm:w-full w-63"
+              wrapperClassName="max-sm:w-full w-63"
               placeholder="yyyy-mm-dd"
               onBlur={validate}
               mask={"YYYY-MM-DD"}

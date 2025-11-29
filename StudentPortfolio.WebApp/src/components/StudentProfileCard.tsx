@@ -18,6 +18,7 @@ import { useMutation } from "../hooks/useMutation";
 import { useOnClickOutsideElement } from "../hooks/useOnClickOutside";
 import type { Student } from "../types/dtos/student";
 import { cn } from "../utilities/cs";
+import { AcknowledgementTypePluralResc } from "../utilities/enumResources";
 import { Button } from "./Button";
 
 interface StudentProfileCardProps
@@ -62,20 +63,24 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
   }, [showHidden]);
 
   const onRemove = useCallback(() => {
-    if (student?.id) {
-      removeStudent([student.id], {
-        onSuccess: () => {
-          toast.success("Student removed successfully!", {
-            position: "top-right",
-          });
-          emitEvent(AppEvents.StudentDeleted, { id: student.id });
-        },
-        onError: () => {
-          toast.success("Error removing student. Please try again.", {
-            position: "top-right",
-          });
-        },
-      });
+    if (student.acknowledgements?.length ?? 0 > 0) {
+      if (student?.id) {
+        removeStudent([student.id], {
+          onSuccess: () => {
+            toast.success("Student removed successfully!", {
+              position: "top-right",
+            });
+            emitEvent(AppEvents.StudentDeleted, { id: student.id });
+          },
+          onError: () => {
+            toast.success("Error removing student. Please try again.", {
+              position: "top-right",
+            });
+          },
+        });
+      }
+    } else {
+      toast.error("Cannot remove student if they have any acknowledgements.");
     }
   }, [student, removeStudent]);
 
@@ -112,6 +117,26 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
                 {moment(student?.endDate).format("MMMM YYYY")}
               </p>
             )}
+            {(student.acknowledgements?.length ?? 0) > 0 && (
+              <p className="">
+                <span className="font-semibold">Has participated in:</span>{" "}
+                {student.acknowledgements
+                  ?.reduce<string[]>((prev, curr) => {
+                    const name =
+                      curr.type != 0
+                        ? AcknowledgementTypePluralResc[curr.type]
+                        : `'${curr.otherType!}'`;
+
+                    if (!prev.includes(name)) {
+                      prev.push(name);
+                    }
+
+                    return prev;
+                  }, [])
+                  .join(", ")}
+              </p>
+            )}
+            <p></p>
           </div>
         )}
       </div>
@@ -131,9 +156,6 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
             </span>
           </Button>
         </div>
-        // <div className="text-center text-gray-400 font-semibold ">
-        //   Show {childrenLenght} more
-        // </div>
       )}
       <div
         className={cn(
