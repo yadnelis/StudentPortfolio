@@ -83,7 +83,7 @@ export const ModalContent: FC<ModalContentProps> = ({
     <MTNModal.Content>
       <div
         className={cn(
-          "relative grid bg-white max-h-dvh max-w-dvw min-h-80 min-w-100 px-8 pt-8 pb-4 grid-rows-[min-content_minmax(0,1fr)_min-content] rounded",
+          "relative grid bg-white max-w-[95dvw] min-h-80 min-w-100 px-8 pt-8 pb-4 grid-rows-[min-content_minmax(0,1fr)_min-content] rounded max-h-[calc(95dvh)]",
           classNames?.content
         )}
       >

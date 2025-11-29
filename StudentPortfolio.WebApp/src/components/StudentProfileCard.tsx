@@ -1,8 +1,10 @@
 import { ChevronDown, ChevronUp, Dot, Plus, Trash } from "lucide-react";
+import moment from "moment";
 import {
   Children,
   useCallback,
   useMemo,
+  useRef,
   useState,
   type ComponentProps,
   type FC,
@@ -13,7 +15,9 @@ import toast from "react-hot-toast";
 import { StudentApi } from "../api/StudentApi";
 import { AppEvents, emitEvent } from "../hooks/useEvent";
 import { useMutation } from "../hooks/useMutation";
+import { useOnClickOutsideElement } from "../hooks/useOnClickOutside";
 import type { Student } from "../types/dtos/student";
+import { cn } from "../utilities/cs";
 import { Button } from "./Button";
 
 interface StudentProfileCardProps
@@ -30,8 +34,14 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
   onClickAddAcknowledgement,
   ...props
 }) => {
+  const contRef = useRef<HTMLDivElement>(null); //This is for mobile styling
   const [removeStudent] = useMutation(StudentApi.remove);
   const [showHidden, setShowHidden] = useState(false);
+  const [active, setActive] = useState(false); //This is for mobile styling
+
+  const onClickOutside = () => {
+    setActive(false);
+  };
 
   const { visibleChildren, childrenLenght } = useMemo(() => {
     let visibleChildren = Children.toArray(children);
@@ -64,18 +74,41 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
     }
   }, [student, removeStudent]);
 
+  useOnClickOutsideElement(contRef, onClickOutside);
+
   return (
     <div
+      ref={contRef}
+      onClick={() => setActive(true)}
       {...props}
-      className="px-10 w-[min(90vw,1200px)] py-7 space-y-2.5 bg-slate-50 shadow-lg max-w-300 outline-accent hover:outline-2 group/studentcard transition-all transition-200"
+      className={cn(
+        [
+          "px-10 w-[min(90vw,1200px)] py-7 space-y-2.5 bg-slate-50 shadow-lg max-w-300 outline-accent hover:outline-2 group/studentcard transition-all transition-200 ",
+          "max-md:border-1 border-transparent",
+        ],
+        { "max-md:border-gray-300": active }
+      )}
     >
       <div>
-        <div className="py-2">
+        <div className="pt-2">
           <span className="font-bold">{student?.institutionalId}</span>
           <Dot className="inline-block" />
           <span className="font-semibold">{student?.fullName}</span>
         </div>
-        <div className="flex"></div>
+        {student?.startDate && (
+          <div className="text-gray-600 gap-10 mb-10">
+            <p>
+              <span className="font-semibold">Started:</span>{" "}
+              {moment(student?.startDate).format("MMMM YYYY")}
+            </p>
+            {student?.endDate && (
+              <p className="">
+                <span className="font-semibold">Graduated:</span>{" "}
+                {moment(student?.endDate).format("MMMM YYYY")}
+              </p>
+            )}
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-10">{visibleChildren}</div>
       {childrenLenght > 2 && !showHidden && (
@@ -83,7 +116,17 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
           Show {childrenLenght} more
         </div>
       )}
-      <div className="mt-5 flex h-fit gap-5 justify-end group-hover/studentcard:visible invisible">
+      <div
+        className={cn(
+          [
+            "mt-5 flex h-fit gap-5 justify-end",
+            "invisible has-[&.deleting]:visible group-hover/studentcard:visible group-focus-within/studentcard:visible group-active/studentcard:visible",
+          ],
+          {
+            "max-md:visible": active,
+          }
+        )}
+      >
         {childrenLenght > 2 && (
           <Button onClick={() => setShowHidden((c) => !c)}>
             {showHidden ? "Show less" : "Show more"}
@@ -96,12 +139,14 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
         )}
         <Button color="danger" onClick={onRemove}>
           <span className="flex items-center gap-2">
-            <Trash className="inline size-5" /> Remove
+            <Trash className="inline size-5" />{" "}
+            <span className="max-sm:hidden">Remove</span>
           </span>
         </Button>
         <Button color={"accent"} onClick={onClickAddAcknowledgement}>
           <span className="flex items-center gap-2">
-            <Plus className="inline size-5" /> Acknowledge
+            <Plus className="inline size-5" />{" "}
+            <span className="max-sm:hidden">Acknowledge</span>
           </span>
         </Button>
       </div>

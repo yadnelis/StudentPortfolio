@@ -17,7 +17,7 @@ const LayoutPortals = ({ children }: { children: React.ReactNode }) => {
 export const Header: FC = () => {
   return (
     <header className=" bg-lime-800 flex justify-center items-center h-13 relative z-10">
-      <AddStudentButton className="absolute left-5 top-6" />
+      <AddStudentButton className="absolute left-5 top-6 z-10 max-md:scale-70 max-md:-left-1" />
       <StudentSearchInput />
     </header>
   );

@@ -107,18 +107,23 @@ export const AcknowledgementModalContent: FC<
             )}
             {student?.startDate && (
               <div className="text-sm text-gray-600">
-                Start Date: {moment(student?.startDate).format("YYYY/MM")}
+                Start Date: {moment(student?.startDate).format("MMMM, YYYY")}
               </div>
             )}
           </>
         }
         submitText={submitText}
-        classNames={{ header: "mb-9", body: "overflow-auto" }}
+        classNames={{
+          header: "mb-9",
+          body: "overflow-y-auto overflow-x-hidden",
+          content: "",
+        }}
         onSubmit={post}
         loading={mutating}
       >
-        <div className="flex h-full mb-10">
-          <div className="space-y-5">
+        <div className="flex h-full mb-10 max-md:flex-col max-md:pe-3">
+          {/* Column 1 */}
+          <div className="space-y-5 max-w-150">
             <div className="flex justify-center gap-3 mb-5 shadow p-5 bg-secondary-50">
               <Dropdown
                 required
@@ -141,10 +146,11 @@ export const AcknowledgementModalContent: FC<
               />
             </div>
 
-            <div className="w-100">
+            <div className="w-full">
               <TextArea
                 label="Description:"
                 className="min-h-80 max-h-[60vh] resize-none"
+                wrapperClassName="w-full"
                 maxLength={500}
                 description={`List the technical, professional, or interpersonal skills the student demonstrated during the '${
                   AcknowledgementTypeResc[formValue.type?.value ?? 0]
@@ -158,7 +164,8 @@ export const AcknowledgementModalContent: FC<
               />
             </div>
           </div>
-          <div className="w-100 ps-5 ms-5 border-s-2 border-gray-300 flex flex-col gap-2">
+          {/* Column 2 */}
+          <div className="md:ps-5 md:ms-5 max-md:mt-5 md:border-s-2 border-gray-300 flex flex-col gap-2 max-w-150">
             <div className="w-full flex gap-3">
               <MaskedInput
                 label="Start Date"

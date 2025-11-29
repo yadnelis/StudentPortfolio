@@ -62,7 +62,7 @@ export const TextInput: FC<TextInputProps> = ({
           "inline-flex absolute h-full [&[data-position=right]]:right-0 [&[data-position=left]]:left-0 px-2",
           classNames?.section
         ),
-        wrapper: cn("relative", classNames?.wrapper),
+        wrapper: cn("relative w-full", classNames?.wrapper),
         label: cn("font-semibold", classNames?.label),
         description: cn("font-normal", classNames?.description),
         root: wrapperClassName,

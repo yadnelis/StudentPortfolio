@@ -13,7 +13,7 @@ export default function AppLayout() {
     <Layout>
       <MantineProvider>
         <Layout.Header />
-        <main className="overflow-auto">
+        <main className="overflow-auto max-w-dvw w-dvw">
           <Outlet />
         </main>
         {/* Portals: Modals, Dialogs and sidebars */}

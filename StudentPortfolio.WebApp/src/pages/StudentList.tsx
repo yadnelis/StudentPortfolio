@@ -62,11 +62,11 @@ export const StudentList: FC = () => {
   });
 
   return (
-    <section className="relative flex flex-col h-full gap-12 items-center w-full p-12">
+    <section className="relative flex flex-col h-full gap-12 items-center w-full p-12 overflow-y-auto overflow-x-hidden">
       {studentMeta.fetching ? (
         <>
-          <StudentProfileCardSkeleton />
-          <StudentProfileCardSkeleton />
+          <StudentProfileCardSkeleton visible={studentMeta.fetching} />
+          <StudentProfileCardSkeleton visible={studentMeta.fetching} />
         </>
       ) : students?.length && students.length > 0 ? (
         students?.map((st, i) => (
