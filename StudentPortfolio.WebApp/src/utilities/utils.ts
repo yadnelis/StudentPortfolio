@@ -1,6 +1,8 @@
 import buildQuery from "odata-query";
 import type { ODataQueryOptions } from "../types/ODataQueryOptions";
 
+export { buildQuery };
+
 interface QueryParams {
   [key: string]: any;
 }
@@ -94,4 +96,17 @@ export function getEnumName<TValue, TEnum extends Record<string, TValue>>(
   )?.[0];
 }
 
-export { buildQuery };
+export const getQueryFromSearchValue = (value: string | null | undefined) => {
+  if (!value) return undefined;
+
+  const values: string[] = value.split(" ");
+  return buildQuery({
+    filter: {
+      or: values.flatMap((x) => [
+        { name: { contains: x } },
+        { lastName: { contains: x } },
+        { institutionalId: { contains: x } },
+      ]),
+    },
+  });
+};

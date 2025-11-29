@@ -121,7 +121,7 @@ export const AcknowledgementModalContent: FC<
         onSubmit={post}
         loading={mutating}
       >
-        <div className="flex h-full mb-10 max-md:flex-col max-md:pe-3">
+        <div className="flex h-full mb-10 max-sm:flex-col max-sm:pe-3">
           {/* Column 1 */}
           <div className="space-y-5 max-w-150">
             <div className="flex justify-center gap-3 mb-5 shadow p-5 bg-secondary-50">
@@ -165,7 +165,7 @@ export const AcknowledgementModalContent: FC<
             </div>
           </div>
           {/* Column 2 */}
-          <div className="md:ps-5 md:ms-5 max-md:mt-5 md:border-s-2 border-gray-300 flex flex-col gap-2 max-w-150">
+          <div className="sm:ps-5 sm:ms-5 max-sm:mt-5 sm:border-s-2 border-gray-300 flex flex-col gap-2 max-w-150">
             <div className="w-full flex gap-3">
               <MaskedInput
                 label="Start Date"

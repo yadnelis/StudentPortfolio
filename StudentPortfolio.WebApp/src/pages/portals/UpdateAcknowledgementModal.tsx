@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
 import { AcknowledgementApi } from "../../api/AcknowledgementApi";
 import { ModalRoot } from "../../components/Modal";
-import { AppEvents, useEvent } from "../../hooks/useEvent";
+import { AppEvents, emitEvent, useEvent } from "../../hooks/useEvent";
 import { useMutation } from "../../hooks/useMutation";
 import type { Acknowledgement } from "../../types/dtos/acknowledgement";
 import type { Student } from "../../types/dtos/student";
@@ -43,6 +43,11 @@ export const UpdateAcknowledgementModal: FC = () => {
             position: "bottom-center",
           });
 
+          emitEvent(AppEvents.AcknowledgementCreated, {
+            student: student,
+            akcnowledgement: payload,
+          });
+
           onSuccess?.();
         },
         onError: (e) => {
@@ -65,7 +70,7 @@ export const UpdateAcknowledgementModal: FC = () => {
         },
       });
     },
-    [acknowledgement]
+    [acknowledgement, student]
   );
 
   return createPortal(

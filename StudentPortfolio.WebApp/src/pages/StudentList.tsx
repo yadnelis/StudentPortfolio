@@ -6,22 +6,10 @@ import { StudentProfileCard } from "../components/StudentProfileCard";
 import { StudentProfileCardSkeleton } from "../components/StudentProfileCardSkeleton";
 import { AppEvents, emitEvent, useEvent } from "../hooks/useEvent";
 import { useListQuery } from "../hooks/useQuery";
-import { buildQuery, getQueryStringVariable } from "../utilities/utils";
-
-const getQueryFromSearchValue = (value: string | null | undefined) => {
-  if (!value) return undefined;
-
-  const values: string[] = value.split(" ");
-  return buildQuery({
-    filter: {
-      or: values.flatMap((x) => [
-        { name: { contains: x } },
-        { lastName: { contains: x } },
-        { institutionalId: { contains: x } },
-      ]),
-    },
-  });
-};
+import {
+  getQueryFromSearchValue,
+  getQueryStringVariable,
+} from "../utilities/utils";
 
 export const StudentList: FC = () => {
   const initialSearch = useMemo(
@@ -35,25 +23,33 @@ export const StudentList: FC = () => {
     {}
   );
 
+  const search = (value: string | undefined) => {
+    const query = getQueryFromSearchValue(value);
+    history.pushState(null, "", `?search=${value}`);
+    studentHandlers.fetch([query]);
+  };
+
   useEvent(AppEvents.RefreshStudentList, () => {
     studentHandlers.refetch();
   });
 
-  useEvent(AppEvents.Search, (e) => {
-    const query = getQueryFromSearchValue(e.detail?.value);
-    history.pushState(null, "", `?search=${e.detail?.value}`);
-    studentHandlers.fetch([query]);
-  });
-
-  useEvent(AppEvents.StudentCreated, (e) => {
-    if (e.detail?.institutionalId) {
-      const query = buildQuery({
-        filter: { institutionalId: e.detail.institutionalId },
-      });
-      history.pushState(null, "", `?search=${e.detail?.institutionalId}`);
-      studentHandlers.fetch([query]);
+  useEvent(
+    [
+      AppEvents.AcknowledgementCreated,
+      AppEvents.AcknowledgementDeleted,
+      AppEvents.AcknowledgementEdited,
+    ],
+    (e) => {
+      console.log("dsajfh ujo", e);
+      search(e.detail?.student?.institutionalId);
     }
-  });
+  );
+
+  useEvent([AppEvents.StudentCreated, AppEvents.StudentEdited], (e) =>
+    search(e.detail?.institutionalId)
+  );
+
+  useEvent(AppEvents.Search, (e) => search(e.detail?.value));
 
   useEvent(AppEvents.StudentDeleted, (e) => {
     if (e.detail?.id) {

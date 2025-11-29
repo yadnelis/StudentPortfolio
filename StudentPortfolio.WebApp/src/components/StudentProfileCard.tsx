@@ -26,17 +26,20 @@ interface StudentProfileCardProps
   children: ReactNode;
   onClickAddAcknowledgement: MouseEventHandler<HTMLButtonElement>;
   student: Student;
+  initialyOpen?: boolean;
 }
 
 export const StudentProfileCard: FC<StudentProfileCardProps> = ({
   student,
   children,
   onClickAddAcknowledgement,
+  initialyOpen = false,
   ...props
 }) => {
+  const MAX_VISIBLE_LENGHT = 2;
   const contRef = useRef<HTMLDivElement>(null); //This is for mobile styling
   const [removeStudent] = useMutation(StudentApi.remove);
-  const [showHidden, setShowHidden] = useState(false);
+  const [showHidden, setShowHidden] = useState(initialyOpen);
   const [active, setActive] = useState(false); //This is for mobile styling
 
   const onClickOutside = () => {
@@ -48,9 +51,11 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
     let otherChildren = visibleChildren;
     let childrenLenght = Children.toArray(children).length;
 
-    if (!showHidden || Children.count(children) <= 2) {
-      otherChildren = visibleChildren.slice(childrenLenght - 3);
-      visibleChildren = visibleChildren.slice(0, 2);
+    if (!showHidden || Children.count(children) <= MAX_VISIBLE_LENGHT) {
+      otherChildren = visibleChildren.slice(
+        childrenLenght - MAX_VISIBLE_LENGHT
+      );
+      visibleChildren = visibleChildren.slice(0, MAX_VISIBLE_LENGHT);
     } else otherChildren = [];
 
     return { visibleChildren, childrenLenght, otherChildren };
@@ -111,10 +116,24 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
         )}
       </div>
       <div className="flex flex-col gap-10">{visibleChildren}</div>
-      {childrenLenght > 2 && !showHidden && (
-        <div className="text-center text-gray-400 font-semibold ">
-          Show {childrenLenght} more
+      {childrenLenght > MAX_VISIBLE_LENGHT && (
+        <div className="flex justify-center">
+          <Button onClick={() => setShowHidden((c) => !c)}>
+            <span className="text-gray-400">
+              {showHidden
+                ? `Show ${childrenLenght - MAX_VISIBLE_LENGHT} less`
+                : `Show ${childrenLenght - MAX_VISIBLE_LENGHT} more`}
+              {showHidden ? (
+                <ChevronUp className="inline-block size-6" />
+              ) : (
+                <ChevronDown className="inline-block size-6" />
+              )}
+            </span>
+          </Button>
         </div>
+        // <div className="text-center text-gray-400 font-semibold ">
+        //   Show {childrenLenght} more
+        // </div>
       )}
       <div
         className={cn(
@@ -127,16 +146,6 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
           }
         )}
       >
-        {childrenLenght > 2 && (
-          <Button onClick={() => setShowHidden((c) => !c)}>
-            {showHidden ? "Show less" : "Show more"}
-            {showHidden ? (
-              <ChevronUp className="inline-block" />
-            ) : (
-              <ChevronDown className="inline-block" />
-            )}
-          </Button>
-        )}
         <Button color="danger" onClick={onRemove}>
           <span className="flex items-center gap-2">
             <Trash className="inline size-5" />{" "}

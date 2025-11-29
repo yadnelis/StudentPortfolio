@@ -8,6 +8,9 @@ export const AppEvents = {
   StudentDeleted: "student.deleted",
   StudentCreated: "student.created",
   StudentEdited: "student.edited",
+  AcknowledgementDeleted: "acknowledgement.deleted",
+  AcknowledgementCreated: "acknowledgement.created",
+  AcknowledgementEdited: "acknowledgement.edited",
   Search: "app.Search",
 } as const;
 
@@ -15,13 +18,26 @@ type eventNameArg = (typeof AppEvents)[keyof typeof AppEvents];
 type eventCallbackArg = (arg: Event & { detail: any }) => void;
 
 export const useEvent = (
-  userEvent: eventNameArg,
+  userEvent: eventNameArg | eventNameArg[],
   callback: eventCallbackArg
 ) => {
   useEffect(() => {
-    window.addEventListener(userEvent, callback as EventListener);
-    return () =>
-      window.removeEventListener(userEvent, callback as EventListener);
+    if (Array.isArray(userEvent)) {
+      userEvent.forEach((event) => {
+        window.addEventListener(event, callback as EventListener);
+      });
+    } else {
+      window.addEventListener(userEvent, callback as EventListener);
+    }
+    return () => {
+      if (Array.isArray(userEvent)) {
+        userEvent.forEach((event) => {
+          window.removeEventListener(event, callback as EventListener);
+        });
+      } else {
+        window.removeEventListener(userEvent, callback as EventListener);
+      }
+    };
   }, []);
 };
 

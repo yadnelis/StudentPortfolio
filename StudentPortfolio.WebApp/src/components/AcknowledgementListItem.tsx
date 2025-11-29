@@ -45,13 +45,23 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
     AcknowledgementApi.remove
   );
 
-  const onRemove = () => {
+  const remove = () => {
     removeAcknowledgement([id]);
+    emitEvent(AppEvents.AcknowledgementDeleted, {
+      student,
+      acknowledgement,
+    });
   };
 
   const onClickOutside = () => {
     setActive(false);
   };
+
+  const edit = () =>
+    emitEvent(AppEvents.OpenUpdateAcknowledgementModal, {
+      student,
+      acknowledgement,
+    });
 
   useOnClickOutsideElement(contRef, onClickOutside);
 
@@ -70,33 +80,35 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
     <div
       {...props}
       ref={contRef}
-      className={cn(
-        [
-          "bg-slate-50 group max-md:border max-md:border-t-0 max-md:border-transparent",
-        ],
-        {
-          "max-md:border-slate-300 ": active,
-        }
-      )}
+      className={cn(["bg-slate-50 group border border-t-0 border-slate-300"], {
+        "max-sm:border-slate-300 ": active,
+      })}
       onBlur={(e) => setActive(false)}
       onClick={(e) => setActive(true)}
     >
-      <div className="border-t sm:border-b border-slate-300 flex gap-2 h-10 min-h-fit items-center">
+      <div
+        className={cn(
+          "border-t border-slate-300 flex gap-2 h-10 min-h-fit items-center max-sm:bg-slate-200/60",
+          {
+            "sm:border-b": !!description,
+          }
+        )}
+      >
         {/* Time */}
-        <div className="text-gray-700 sm:bg-slate-200 px-2 py-1 h-full flex items-center">
-          <span className=" ">
+        <div className="text-gray-700 sm:bg-slate-200 px-2 h-full flex items-center w-fit overflow-hidden">
+          <span className="text-nowrap text-ellipsis">
             {startDate && <span>{moment(startDate).format("YYYY/MM/DD")}</span>}
             {endDate && <span> - {moment(endDate).format("YYYY/MM/DD")}</span>}
           </span>
         </div>
-        <div className="flex gap-2 justify-between items-center grow w-100 max-w-full min-w-0">
+        <div className="flex gap-2 justify-between items-center grow max-w-full min-w-0">
           {/*  Type & Place */}
-          <TypeAndPlace className="max-sm:invisible" />
+          <TypeAndPlace className="max-sm:hidden" />
           {/*  Command Btns */}
           <div
             className={cn(
               [
-                "space-x-3 flex-nowrap min-w-fit transition-all transition-200 pe-3",
+                "space-x-3 flex-nowrap min-w-fit transition-all transition-200 pe-3 flex grow justify-end",
                 "invisible has-[&.deleting]:visible group-hover:visible group-focus-within:visible group-active:visible",
               ],
               {
@@ -105,18 +117,10 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
               }
             )}
           >
-            <IconButton
-              onClick={() =>
-                emitEvent(AppEvents.OpenUpdateAcknowledgementModal, {
-                  student,
-                  acknowledgement,
-                })
-              }
-              variant="secondary"
-            >
+            <IconButton onClick={edit} variant="secondary">
               <Pencil />
             </IconButton>
-            <IconButton onClick={onRemove} variant="danger" loading={mutating}>
+            <IconButton onClick={remove} variant="danger" loading={mutating}>
               <Trash />
             </IconButton>
           </div>
@@ -124,7 +128,12 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
       </div>
 
       {/*  Type & Place: mobile */}
-      <div className="flex sm:hidden w-full overflow-hidden p-2 border-b border-slate-300">
+      <div
+        className={cn(
+          "flex sm:hidden w-full overflow-hidden p-2 border-slate-300",
+          { "border-b": !!description }
+        )}
+      >
         <TypeAndPlace className="" />
       </div>
 
