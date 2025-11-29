@@ -37,6 +37,7 @@ namespace StudentPortfolio.API.Repositories
                 Institution = st.Institution,
                 InstitutionalId = st.InstitutionalId,
                 StartDate = st.StartDate,
+                EndDate = st.EndDate,
                 DateCreated = st.DateCreated,
                 Acknowledgements = st.Acknowledgements.Select(ack => new GetAcknowledgementResponse
                 {

@@ -20,6 +20,7 @@ namespace StudentPortfolio.API.Models.Dtos.Response.Student
         public string LastName { get; set; }
         public string FullName { get { return string.Join(" ", [Name, LastName]); } }
         public DateOnly? StartDate { get; set; }
+        public DateOnly? EndDate { get; set; }
         public string Institution { get; set; }
         public DateTimeOffset? DateCreated { get; set;}
     }
