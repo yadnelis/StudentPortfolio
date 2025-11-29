@@ -35,7 +35,6 @@ export const UpdateAcknowledgementModal: FC = () => {
 
   const onSubmit = useCallback<acknowledgemenetModalMutatefn>(
     async (payload, { onError, onSuccess }) => {
-      console.log(acknowledgement);
       if (!acknowledgement.id) return;
 
       updateAcknowledgement([acknowledgement.id, payload], {
@@ -61,10 +60,6 @@ export const UpdateAcknowledgementModal: FC = () => {
                 position: "bottom-center",
               }
             );
-          } else {
-            toast.error("Unexpected error occured.", {
-              position: "bottom-center",
-            });
           }
           onError?.(e);
         },

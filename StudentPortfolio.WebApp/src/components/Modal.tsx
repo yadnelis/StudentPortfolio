@@ -56,7 +56,7 @@ export const ModalRoot: FC<modalRootProps> = ({
       //   inner: "block! w-fit! h-fit!",
       //   content: "max-w-100 min-w-80 w-fit",
       // }}
-      className={`${className} h-dvh w-dvw bg-transparent absolute top-0 left-0 flex justify-center items-center ${
+      className={`${className} h-dvh w-dvw bg-transparent absolute top-0 left-0 z-100 flex justify-center items-center ${
         !opened && "hidden"
       }`}
     >

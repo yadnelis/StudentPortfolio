@@ -5,6 +5,9 @@ export const AppEvents = {
   OpenCreateAcknowledgementModal: "modal.opencreateacknowledgementmodal",
   OpenUpdateAcknowledgementModal: "modal.openupdateacknowledgementmodal",
   RefreshStudentList: "app.refreshstudentlist",
+  StudentDeleted: "student.deleted",
+  StudentCreated: "student.created",
+  StudentEdited: "student.edited",
   Search: "app.Search",
 } as const;
 

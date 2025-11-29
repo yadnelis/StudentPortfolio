@@ -14,7 +14,7 @@ namespace StudentPortfolio.API.Repositories
 {
     public interface IStudentsRepository : IRepo<Student>
     {
-        IQueryable<GetStudentResponse> Query(ODataQueryOptions<Student> opts);
+        IQueryable<GetStudentResponse> Query(ODataQueryOptions<GetStudentResponse> opts);
         Task<Student> Create(CreateStudentRequest request);
         Task<Student> Update(Guid id, UpdateStudentRequest request);
         Task<Student> GetByInstitutionalId(string institutionalId);
@@ -27,21 +27,9 @@ namespace StudentPortfolio.API.Repositories
         public override IQueryable<Student> IncludeRelatedEntities(IQueryable<Student> query)       
             => query.Include(x => x.Acknowledgements);
 
-        public IQueryable<GetStudentResponse> Query(ODataQueryOptions<Student> opts)
+        public IQueryable<GetStudentResponse> Query(ODataQueryOptions<GetStudentResponse> opts)
         {
-            var query = this.Get();
-            // posibly add some limits here to avoid users querying by properties we don't like
-            var results = opts.ApplyTo(query, new ODataQuerySettings { PageSize = 100 }, 
-                AllowedQueryOptions.Skip | 
-                AllowedQueryOptions.Filter | 
-                AllowedQueryOptions.OrderBy | 
-                AllowedQueryOptions.Top | 
-                AllowedQueryOptions.Skip | 
-                AllowedQueryOptions.Count
-            ) as IQueryable<Student>;
-
-            // Mapster breaks here so it is necesary to use this type of query
-            return results.Select(st => new GetStudentResponse
+            var query = this.Get().Select(st => new GetStudentResponse
             {
                 Id = st.Id,
                 Name = st.Name,
@@ -66,6 +54,12 @@ namespace StudentPortfolio.API.Repositories
                     DateCreated = ack.DateCreated,
                 })
             });
+
+            // posibly add some limits here to avoid users querying by properties we don't like
+            var results = opts.ApplyTo(query) as IQueryable<GetStudentResponse>;
+
+            // Mapster breaks here so it is necesary to use this type of query
+            return results;
         }
 
         public Task<Student> Create(CreateStudentRequest request)

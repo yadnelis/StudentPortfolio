@@ -7,6 +7,7 @@ import type {
 } from "react";
 import React, { Children, cloneElement } from "react";
 import { tv } from "tailwind-variants";
+import { cn } from "../utilities/cs";
 import { LoaderSpinner } from "./LoaderSpinner";
 
 export interface IconButtonProps extends ComponentProps<"button"> {
@@ -26,8 +27,7 @@ const iconButtonVariants = tv({
   variants: {
     variant: {
       default: {
-        base: "text-stone-600",
-        icon: "group-hover/iconbutton:text-gray-400",
+        base: "text-stone-600 hover:text-gray-400",
         loader: " text-stone-600",
       },
       danger: {
@@ -67,7 +67,7 @@ export const IconButton: FC<IconButtonProps> = ({
     variant,
   });
   return (
-    <button className={buttonTailwind({ className })} {...props}>
+    <button className={cn(buttonTailwind(), className)} {...props}>
       {loading ? (
         <LoaderSpinner
           className={loaderTailwind()}

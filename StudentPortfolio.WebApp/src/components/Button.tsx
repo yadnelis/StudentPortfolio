@@ -18,18 +18,21 @@ export const Button: FC<ButtonProps> = ({
 };
 
 export interface ButtonProps extends ComponentProps<"button"> {
-  color?: "default" | "secondary" | "primary" | "accent";
+  color?: "default" | "secondary" | "primary" | "accent" | "danger";
   rounded?: "default" | "none" | "max";
   loading?: boolean;
 }
 
 const buttonVariants = tv({
-  base: "p-2 px-3 text-nowrap",
+  base: "p-2 px-3 text-nowrap transition-all transition-200",
   variants: {
     color: {
-      accent: "bg-accent text-secondary font-semibold",
-      primary: "bg-lime-600 text-white font-semibold",
+      accent:
+        "bg-accent hover:bg-accent-200 active:bg-accent-800 active:text-white text-secondary font-semibold",
+      primary: "bg-lime-600  text-white font-semibold",
       secondary: "bg-slate-300",
+      danger:
+        "text-vermilion-400 bg-transparent hover:bg-vermilion-400 hover:text-white active:bg-vermilion-600 active:text-white",
       default: "",
     },
     rounded: {

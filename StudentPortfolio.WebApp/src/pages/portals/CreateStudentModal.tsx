@@ -6,7 +6,7 @@ import { StudentApi } from "../../api/StudentApi";
 import { MaskedInput } from "../../components/MaskedInput";
 import { ModalContent, ModalRoot } from "../../components/Modal";
 import { TextInput } from "../../components/TextInput";
-import { AppEvents, useEvent } from "../../hooks/useEvent";
+import { AppEvents, emitEvent, useEvent } from "../../hooks/useEvent";
 import { useFormModel } from "../../hooks/useFormModel";
 import { useMutation } from "../../hooks/useMutation";
 import type { CreateStudentRequest } from "../../types/dtos/student";
@@ -63,12 +63,14 @@ export const CreateStudentModal: FC = () => {
     if (!valid) return;
     const payload = formModelToValue(formValue);
     createStudent([payload], {
-      onSuccess: () => {
+      onSuccess: (e) => {
         toast.success("Student created successfully!", {
           position: "bottom-center",
         });
 
         setOpen(false);
+        emitEvent(AppEvents.RefreshStudentList);
+        emitEvent(AppEvents.StudentCreated, e.entity);
       },
       onError: (e) => {
         if (e.status === 422) {
@@ -85,10 +87,6 @@ export const CreateStudentModal: FC = () => {
             );
         } else if (e.status === 400) {
           toast.error("Could not create student due to errors in the values.", {
-            position: "bottom-center",
-          });
-        } else {
-          toast.error("Unexpected error occured.", {
             position: "bottom-center",
           });
         }

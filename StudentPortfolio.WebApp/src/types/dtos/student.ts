@@ -1,7 +1,8 @@
+import type { BaseEntity } from "./_baseEntity";
 import type { BaseResponse } from "./_baseResponse";
 import type { Acknowledgement } from "./acknowledgement";
 
-export interface Student {
+export interface Student extends BaseEntity {
   id: string;
   institutionalId: string;
   name: string;

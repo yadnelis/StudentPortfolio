@@ -29,7 +29,6 @@ export function validateAcknowledgement<T extends MutateAcknowledgementRequest>(
     formValue.endDate?.value &&
     !moment(formValue.endDate.value, "YYYY-MM-DD", true).isValid()
   ) {
-    console.log(formValue.endDate?.value);
     valid = false;
     validProperties.endDate = false;
     addError(

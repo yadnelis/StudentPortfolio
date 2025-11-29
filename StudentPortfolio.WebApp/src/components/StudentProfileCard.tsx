@@ -1,6 +1,7 @@
-import { ChevronDown, ChevronUp, Dot, Plus } from "lucide-react";
+import { ChevronDown, ChevronUp, Dot, Plus, Trash } from "lucide-react";
 import {
   Children,
+  useCallback,
   useMemo,
   useState,
   type ComponentProps,
@@ -8,6 +9,10 @@ import {
   type MouseEventHandler,
   type ReactNode,
 } from "react";
+import toast from "react-hot-toast";
+import { StudentApi } from "../api/StudentApi";
+import { AppEvents, emitEvent } from "../hooks/useEvent";
+import { useMutation } from "../hooks/useMutation";
 import type { Student } from "../types/dtos/student";
 import { Button } from "./Button";
 
@@ -25,6 +30,7 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
   onClickAddAcknowledgement,
   ...props
 }) => {
+  const [removeStudent] = useMutation(StudentApi.remove);
   const [showHidden, setShowHidden] = useState(false);
 
   const { visibleChildren, childrenLenght } = useMemo(() => {
@@ -40,6 +46,24 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
     return { visibleChildren, childrenLenght, otherChildren };
   }, [showHidden]);
 
+  const onRemove = useCallback(() => {
+    if (student?.id) {
+      removeStudent([student.id], {
+        onSuccess: () => {
+          toast.success("Student removed successfully!", {
+            position: "top-right",
+          });
+          emitEvent(AppEvents.StudentDeleted, { id: student.id });
+        },
+        onError: () => {
+          toast.success("Error removing student. Please try again.", {
+            position: "top-right",
+          });
+        },
+      });
+    }
+  }, [student, removeStudent]);
+
   return (
     <div
       {...props}
@@ -51,6 +75,7 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
           <Dot className="inline-block" />
           <span className="font-semibold">{student?.fullName}</span>
         </div>
+        <div className="flex"></div>
       </div>
       <div className="flex flex-col gap-10">{visibleChildren}</div>
       {childrenLenght > 2 && !showHidden && (
@@ -58,7 +83,7 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
           Show {childrenLenght} more
         </div>
       )}
-      <div className="flex h-fit gap-5 justify-end">
+      <div className="mt-5 flex h-fit gap-5 justify-end group-hover/studentcard:visible invisible">
         {childrenLenght > 2 && (
           <Button onClick={() => setShowHidden((c) => !c)}>
             {showHidden ? "Show less" : "Show more"}
@@ -69,11 +94,12 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
             )}
           </Button>
         )}
-        <Button
-          color={"accent"}
-          onClick={onClickAddAcknowledgement}
-          className="mt-5 group-hover/studentcard:visible invisible"
-        >
+        <Button color="danger" onClick={onRemove}>
+          <span className="flex items-center gap-2">
+            <Trash className="inline size-5" /> Remove
+          </span>
+        </Button>
+        <Button color={"accent"} onClick={onClickAddAcknowledgement}>
           <span className="flex items-center gap-2">
             <Plus className="inline size-5" /> Acknowledge
           </span>

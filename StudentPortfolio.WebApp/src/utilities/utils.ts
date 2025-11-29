@@ -1,3 +1,4 @@
+import buildQuery from "odata-query";
 import type { ODataQueryOptions } from "../types/ODataQueryOptions";
 
 interface QueryParams {
@@ -28,17 +29,33 @@ export function convertToURLQueryParams(
   return searchParams.toString();
 }
 
-export function appendQueryString(url: string, params?: QueryParams & object) {
-  const query = convertToURLQueryParams(params);
-  return `${url}${query ? `?${query}` : ""}`;
+export function appendQueryString(
+  url: string,
+  params?: (QueryParams & object) | string
+) {
+  if (!params) return url;
+  else if (typeof params === "string") {
+    if (params.charAt(0) === "?") return url + params;
+    else return url + "?" + params;
+  } else {
+    const query = convertToURLQueryParams(params);
+    return `${url}${query ? `?${query}` : ""}`;
+  }
 }
 
 export function appendODataQueryString(
   url: string,
-  params?: ODataQueryOptions
+  opt?: ODataQueryOptions | string
 ) {
-  const query = convertToURLQueryParams(params);
-  return `${url}${query ? `?${query}` : ""}`;
+  if (!opt) return url;
+  else if (typeof opt === "string") {
+    if (opt.charAt(0) === "?") return url + opt;
+    else return url + "?" + opt;
+  } else {
+    const query = buildQuery(opt);
+    history.pushState(null, "Student Portfolio", query);
+    return `${url}${query}`;
+  }
 }
 
 export function ordinalSuffixOf(i: number) {
@@ -56,6 +73,18 @@ export function ordinalSuffixOf(i: number) {
   return "th";
 }
 
+export function getQueryStringVariable(variable: string) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (decodeURIComponent(pair[0]) == variable) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
+  return undefined;
+}
+
 export function getEnumName<TValue, TEnum extends Record<string, TValue>>(
   enumObj: TEnum,
   value: TValue
@@ -64,3 +93,5 @@ export function getEnumName<TValue, TEnum extends Record<string, TValue>>(
     ([_key, _value]) => _value === value
   )?.[0];
 }
+
+export { buildQuery };

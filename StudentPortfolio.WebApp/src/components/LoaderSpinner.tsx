@@ -1,4 +1,6 @@
-import { useEffect, useState, type ComponentProps, type FC } from "react";
+import { type ComponentProps, type FC } from "react";
+import { useDelayedTrigger } from "../hooks/useDelayedTrigger";
+import { cn } from "../utilities/cs";
 
 interface LoaderSpinnerProps extends ComponentProps<"i"> {
   size?: "3xs" | "2xs" | "xs" | "sm" | "md" | "lg" | "xl";
@@ -19,11 +21,11 @@ export const LoaderSpinner: FC<LoaderSpinnerProps> = ({
   backgroundClassName,
   ...rest
 }) => {
-  const [trigger, setTrigger] = useState(false);
-  const [_delayedVisible, setVisible] = useState(false);
+  const [delayedVisible] = useDelayedTrigger(visible, delay);
+
   const sizeMap: Record<sizes, string> = {
-    "3xs": "w-2 [--spinner-width:2px]",
-    "2xs": "w-4 [--spinner-width:2px]",
+    "3xs": "w-2 ",
+    "2xs": "w-4 ",
     xs: "w-6",
     sm: "w-8",
     md: "w-12",
@@ -31,45 +33,28 @@ export const LoaderSpinner: FC<LoaderSpinnerProps> = ({
     xl: "w-20",
   };
 
-  const triggerVisible = async () => {
-    setTimeout(() => {
-      setTrigger((prev) => !prev);
-    }, delay);
-  };
-
-  useEffect(() => {
-    if (visible) {
-      triggerVisible();
-    } else {
-      setVisible(false);
-    }
-  }, [visible]);
-
-  useEffect(() => {
-    if (visible) {
-      setVisible(true);
-    }
-  }, [trigger]);
-
   const spinner = (
     <i
-      className={`inline-block w- loader-spinner ${sizeMap[size]} ${className}`}
+      className={`inline-block w- loader-spinner ${sizeMap[size]} ${className} [--spinner-width:2px]`}
       {...rest}
     >
       <span className="sr-only">Loading</span>
     </i>
   );
 
-  return !_delayedVisible ? (
+  return !delayedVisible ? (
     <></>
   ) : !includeBackground ? (
     spinner
   ) : (
     <>
       <div
-        className={`absolute flex h-full w-full bg-white/70 z-10 ${backgroundClassName}`}
+        className={cn(
+          `absolute h-full w-full bg-white/70 z-5 `,
+          backgroundClassName
+        )}
       ></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-6">
         {spinner}
       </div>
     </>

@@ -2,6 +2,7 @@ import type { ButtonProps } from "@mantine/core";
 import { UserPlus } from "lucide-react";
 import type { FC } from "react";
 import { AppEvents, emitEvent } from "../hooks/useEvent";
+import { cn } from "../utilities/cs";
 import { IconButton } from "./IconButton";
 
 // export interface AddStudentButtonProps extends ButtonProps {}
@@ -9,16 +10,24 @@ import { IconButton } from "./IconButton";
 export const AddStudentButton: FC<ButtonProps> = ({ className }) => {
   return (
     <div
-      className={`${className} p-1 bg-gradient-to-b from-green-400 to-lime-600 rounded-full`}
+      className={cn(
+        "relative group/addbtn transition-colors hover:to-green-400 hover:from-accent-200 p-1 bg-linear-to-b from-green-400 to-lime-600 hover:animate-light-bounce rounded-full",
+        className
+      )}
     >
       <IconButton
         size="xl"
-        className={`!rounded-full bg-gradient-to-r from-lime-600 to-green-800 p-3`}
+        className={cn([
+          "relative rounded-full bg-linear-to-r ",
+          "text-lime-50 p-3 group-hover/addbtn:text-white hover:text-white",
+          "from-lime-600 to-green-800",
+          "hover:to-green-700 hover:from-lime-600",
+        ])}
         onClick={() => {
           emitEvent(AppEvents.OpenCreateUserModal);
         }}
       >
-        <UserPlus className="!text-lime-50" />
+        <UserPlus />
       </IconButton>
     </div>
   );

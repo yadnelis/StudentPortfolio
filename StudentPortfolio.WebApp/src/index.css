@@ -69,6 +69,18 @@
   --color-accent-900: oklch(0.33 0.07 122);
   --color-accent-950: oklch(0.19 0.04 122);
 
+  --color-vermilion-50: oklch(0.95 0.02 22);
+  --color-vermilion-100: oklch(0.87 0.05 24);
+  --color-vermilion-200: oklch(0.79 0.08 26);
+  --color-vermilion-300: oklch(0.68 0.13 26);
+  --color-vermilion-400: oklch(0.64 0.16 28);
+  --color-vermilion-500: oklch(0.58 0.19 29);
+  --color-vermilion-600: oklch(0.5 0.16 29);
+  --color-vermilion-700: oklch(0.42 0.13 29);
+  --color-vermilion-800: oklch(0.34 0.1 29);
+  --color-vermilion-900: oklch(0.24 0.07 28);
+  --color-vermilion-950: oklch(0.15 0.03 32);
+
   --color-form-error-text: var(--color-red-400);
   --color-form-error-border: var(--color-red-400);
   --color-form-required: var(--color-red-400);
@@ -88,4 +100,15 @@
   --text-8xl: 72px;
   --text-9xl: 96px;
   --text-10xl: 128px;
+
+  --animate-light-bounce: light-bounce 0.8s ease-in-out infinite;
+  @keyframes light-bounce {
+    0%,
+    100% {
+      transform: translateY(0%);
+    }
+    50% {
+      transform: translateY(-5%);
+    }
+  }
 }

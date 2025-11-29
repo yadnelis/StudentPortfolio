@@ -20,7 +20,7 @@ namespace StudentPortfolio.API.Controllers
     ) : AppControllerBase(env)
     {
         [HttpGet]
-        public async Task<IActionResult> Get(ODataQueryOptions<Student> opts)
+        public async Task<IActionResult> Get(ODataQueryOptions<GetStudentResponse> opts)
         {
             try
             {

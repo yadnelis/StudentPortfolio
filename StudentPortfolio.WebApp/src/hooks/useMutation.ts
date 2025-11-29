@@ -1,10 +1,12 @@
 import { useThrottledCallback } from "@mantine/hooks";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface options<TResult, TErrorResult = void> {
   onSuccess?: (args: TResult) => void;
   onSettled?: () => void;
   onError?: (reason: any) => TErrorResult;
+  onServerError?: (reason: any) => TErrorResult;
 }
 
 export type MutateFN<TArgs, TResult> = (
@@ -22,7 +24,13 @@ export const useMutation = <TArgs extends [...any], TResult>(
       setMutating(true);
       await fn(...data)
         .then(options?.onSuccess)
-        .catch(options?.onError)
+        .catch((e) => {
+          if (e?.status && e?.status >= 500 && e?.status % 500 > 100)
+            toast.error("An unexpected server error occured.", {
+              position: "bottom-center",
+            });
+          else options?.onError?.(e);
+        })
         .finally(() => {
           options?.onSettled?.();
           setMutating(false);
