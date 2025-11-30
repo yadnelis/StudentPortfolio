@@ -9,7 +9,7 @@ import type {
 } from "../types/dtos/acknowledgement";
 
 const controller =
-  (import.meta.env.VITE_API_URL ?? "MISSING_API_URL") + "/Acknowledgements";
+  (import.meta.env.VITE_API_URL ?? "") + "api/Acknowledgements";
 
 // export const getAcknowledgements = async (args?: GetAcknowledgementRequest) => {
 //   const url = appendQueryString(controller, args);

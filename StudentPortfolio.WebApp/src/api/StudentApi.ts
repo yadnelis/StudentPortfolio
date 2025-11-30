@@ -7,8 +7,7 @@ import type {
 } from "../types/dtos/student";
 import { appendQueryString } from "../utilities/utils";
 
-const controller =
-  (import.meta.env.VITE_API_URL ?? "MISSING_API_URL") + "/Students";
+const controller = (import.meta.env.VITE_API_URL ?? "") + "api/Students";
 
 const getAll = async (args?: string) => {
   const url = appendQueryString(controller, args);
