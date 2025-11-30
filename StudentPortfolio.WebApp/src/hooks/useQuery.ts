@@ -16,7 +16,7 @@ export const useListQuery = <TData extends BaseEntity, TArgs extends [...any]>(
   options?: UseListQueryOptions<TData>
 ) => {
   const [defaultArgs, setDefaultArgs] = useState(initialArgs);
-  const [data, dataHandlers] = useListState<TData>(defaultArgs);
+  const [data, dataHandlers] = useListState<TData>(options?.initialData);
   const [lastFetched, setLastFetched] = useState<Date>(new Date());
   const [fetching, setIsFetching] = useState<boolean>(false);
 
