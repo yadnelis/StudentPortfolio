@@ -20,8 +20,8 @@ export const UpdateAcknowledgementModal: FC = () => {
 
   const [student, setStudent] = useState<Partial<Student>>({});
   const [acknowledgement, setAcknoledgement] = useState<
-    Partial<Acknowledgement>
-  >({});
+    Partial<Acknowledgement> & { timeStamp: Date } // time stamp lets the modal be repopulated with the same data after closing
+  >({ timeStamp: new Date() });
 
   const onClose = useCallback(() => {
     setOpen(false);
@@ -30,7 +30,7 @@ export const UpdateAcknowledgementModal: FC = () => {
   useEvent(AppEvents.OpenUpdateAcknowledgementModal, (e) => {
     setOpen(true);
     setStudent(e.detail?.student);
-    setAcknoledgement(e.detail?.acknowledgement);
+    setAcknoledgement({ ...e.detail?.acknowledgement, timeStamp: new Date() });
   });
 
   const onSubmit = useCallback<acknowledgemenetModalMutatefn>(

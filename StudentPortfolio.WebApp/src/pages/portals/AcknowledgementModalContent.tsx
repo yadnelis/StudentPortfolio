@@ -38,7 +38,7 @@ interface AcknowledgementModalContentProps {
   student?: Partial<Student>;
   mutate: acknowledgemenetModalMutatefn;
   mutating: boolean;
-  acknowledgement?: Partial<Acknowledgement>;
+  acknowledgement?: Partial<Acknowledgement> & { timeStamp: Date };
   title: string;
   submitText: string;
 }

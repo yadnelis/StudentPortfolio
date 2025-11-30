@@ -23,12 +23,12 @@ export type studentModalMutatefn = (
 
 interface StudentModalContentProps {
   onClose: () => void;
-  student?: Partial<Student>;
+  student?: Partial<Student> & { timeStamp: Date };
   mutate: studentModalMutatefn;
   mutating: boolean;
-  acknowledgement?: Partial<Student>;
   title: string;
   submitText: string;
+  editing?: boolean;
 }
 
 export const StudentModalContent: FC<StudentModalContentProps> = ({
@@ -37,6 +37,7 @@ export const StudentModalContent: FC<StudentModalContentProps> = ({
   mutate,
   submitText,
   title,
+  editing = false,
   mutating,
 }) => {
   const { formValue, setFormValue, handleChange, validate } =
@@ -82,9 +83,11 @@ export const StudentModalContent: FC<StudentModalContentProps> = ({
       <div className="space-y-5 mb-10">
         <div className="flex justify-center gap-3 mb-5">
           <TextInput
-            required
+            required={!editing}
             label="Institutional Id"
             className="w-70"
+            readOnly={editing}
+            disabled={editing}
             placeholder="M00102030"
             value={formValue?.institutionalId?.value}
             error={formValue?.institutionalId?.error}

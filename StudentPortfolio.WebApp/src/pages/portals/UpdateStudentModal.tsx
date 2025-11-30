@@ -14,7 +14,9 @@ import {
 export const UpdateStudentModal: FC = () => {
   const [updateStudent, { mutating }] = useMutation(StudentApi.update);
   const [open, setOpen] = useState(false);
-  const [student, setStudent] = useState<Student | undefined>();
+  const [student, setStudent] = useState<
+    Partial<Student> & { timeStamp: Date } // Timestamp lets the modal content get repopulated with the same data because it triggers the useEffect
+  >({ timeStamp: new Date() });
 
   const close = useCallback(() => {
     setOpen(false);
@@ -24,7 +26,7 @@ export const UpdateStudentModal: FC = () => {
     AppEvents.OpenUpdateStudentModal,
     (e) => {
       if (e.detail?.student) {
-        setStudent(e.detail.student);
+        setStudent({ ...e.detail.student, timeStamp: new Date() });
         setOpen(true);
       }
     },
@@ -77,6 +79,7 @@ export const UpdateStudentModal: FC = () => {
         student={student}
         title={`Update '${student?.institutionalId}'`}
         submitText="Update"
+        editing
       />
     </ModalRoot>,
     document.body
