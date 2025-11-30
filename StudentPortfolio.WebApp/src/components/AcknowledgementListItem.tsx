@@ -154,7 +154,7 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
               )}
             </div>
           )}
-          <p>{description}</p>
+          <pre className="font-sans">{description}</pre>
         </div>
       )}
       {children && <p className="bg-slate-100 p-3">{children}</p>}
