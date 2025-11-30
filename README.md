@@ -12,6 +12,10 @@ Right click the StudentPortfolio.Api project in visual studio and publish to a f
 
 Api for the student portfolio app.
 
+### Main Packages
+
+- [Entity Framework Core](https://github.com/dotnet/efcore) - Object Database Mapper: Maps objects and functions to database tables and queries. Removes the need to directly interact with the database. Updates to the database schema can be performed with the update-database command then the update-database command, wich creates and applies a migration.   
+
 ### Running the app locally
 - Open the package manager console and set StudentPortfolio.Api as the startup project.
 - Run the update-database command:
