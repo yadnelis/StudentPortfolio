@@ -57,7 +57,7 @@ export const TextInput: FC<TextInputProps> = ({
       classNames={{
         ...classNames,
         input: cn(
-          `bg-white hover:bg-slate-50 p-2 border-gray-200 rounded-xs border-2 focus:ring-blue-200/50 focus:ring-2 focus:border-gray-300 outline-none`,
+          `disabled:bg-slate-100 disabled:text-gray-500 bg-white hover:bg-slate-50 p-2 border-gray-200 rounded-xs border-2 focus:ring-blue-200/50 focus:ring-2 focus:border-gray-300 outline-none`,
           className
         ),
         section: cn(
