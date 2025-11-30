@@ -100,13 +100,14 @@ export const getQueryFromSearchValue = (value: string | null | undefined) => {
   if (!value) return undefined;
 
   const values: string[] = value.split(" ");
+  const filter = values.flatMap((x) => ({
+    or: [
+      { name: { contains: x } },
+      { lastName: { contains: x } },
+      { institutionalId: { contains: x } },
+    ],
+  }));
   return buildQuery({
-    filter: {
-      or: values.flatMap((x) => [
-        { name: { contains: x } },
-        { lastName: { contains: x } },
-        { institutionalId: { contains: x } },
-      ]),
-    },
+    filter,
   });
 };

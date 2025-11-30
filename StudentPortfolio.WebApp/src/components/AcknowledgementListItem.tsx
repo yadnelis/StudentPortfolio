@@ -71,6 +71,7 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
           ? otherType
           : Object.entries(acknowledgementType).find((x) => x[1] === type)?.[0]}
       </span>
+      {competitionName && <span className="">: {competitionName}</span>}
       {place && <> at {place}</>}
     </span>
   );
@@ -142,9 +143,8 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
 
       {description && (
         <div className="bg-slate-100 p-3 text-wrap overflow-hidden break-all">
-          {(competitionName || competitionPosition) && (
+          {competitionPosition && (
             <div className="mb-5 text-gray-600">
-              {competitionName && <p> Name: {competitionName}</p>}
               {competitionPosition && (
                 <p>
                   Position:{" "}

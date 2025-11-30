@@ -2,6 +2,7 @@ import { UserRoundSearch } from "lucide-react";
 import { useMemo, type FC } from "react";
 import { StudentApi } from "../api/StudentApi";
 import { AcknowledgementListItem } from "../components/AcknowledgementListItem";
+import { Button } from "../components/Button";
 import { StudentProfileCard } from "../components/StudentProfileCard";
 import { StudentProfileCardSkeleton } from "../components/StudentProfileCardSkeleton";
 import { AppEvents, emitEvent, useEvent } from "../hooks/useEvent";
@@ -20,14 +21,14 @@ export const StudentList: FC = () => {
 
   const [students, studentHandlers, studentMeta] = useListQuery(
     StudentApi.getAll,
-    [initialSearch],
+    [initialSearch ?? "?"],
     {}
   );
 
   const search = (value: string | undefined) => {
     const query = getQueryFromSearchValue(value);
     history.pushState(null, "", `?search=${value}`);
-    studentHandlers.fetch([query]);
+    studentHandlers.fetch([query ?? "?"]);
   };
 
   const searchWithInstId = (value: string | undefined) => {
@@ -93,17 +94,24 @@ export const StudentList: FC = () => {
           <StudentProfileCardSkeleton visible={studentMeta.fetching} />
         </>
       ) : students?.length && students.length > 0 ? (
-        students?.map((st, i) => (
-          <StudentProfileCard key={st?.id + i} student={st}>
-            {st?.acknowledgements?.map((ack, i) => (
-              <AcknowledgementListItem
-                key={ack.id + i}
-                acknowledgement={ack}
-                student={st}
-              />
-            ))}
-          </StudentProfileCard>
-        ))
+        <>
+          {students?.map((st, i) => (
+            <StudentProfileCard key={st?.id + i} student={st}>
+              {st?.acknowledgements?.map((ack, i) => (
+                <AcknowledgementListItem
+                  key={ack.id + i}
+                  acknowledgement={ack}
+                  student={st}
+                />
+              ))}
+            </StudentProfileCard>
+          ))}
+          {studentMeta.morePages && (
+            <Button onClick={() => studentHandlers.fetchAppend()}>
+              Show more results
+            </Button>
+          )}
+        </>
       ) : (
         <div className="h-full w-full flex justify-center items-center">
           <div className="flex gap-5 items-center text-slate-600">
