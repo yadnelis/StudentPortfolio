@@ -13,9 +13,9 @@ Right click the StudentPortfolio.Api project in visual studio and publish to a f
 Api for the student portfolio app.
 
 ### Running the app locally
-- Open the package manager console and set StudentPortfolio.Api as the startup project
-- Run the update-database command
-  - Ensure the connection string to the DB is correct 
+- Open the package manager console and set StudentPortfolio.Api as the startup project.
+- Run the update-database command:
+  - Ensure the connection string for the database in the appSettings file is correct.
 - Run the app form visual studio. API Requests can be made to https://localhost:56890/api.
 
 ## StudentPortfolio.WebApp
