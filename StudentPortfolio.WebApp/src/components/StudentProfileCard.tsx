@@ -107,7 +107,7 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
       {...props}
       className={cn(
         [
-          "px-10 w-[min(90vw,1200px)] py-7 space-y-2.5 bg-slate-50 shadow-lg max-w-300 outline-accent hover:outline-2 group/studentcard transition-all transition-200 ",
+          "px-10 w-[90dvw]  max-w-300 py-7 space-y-2.5 bg-slate-50 shadow-lg outline-accent hover:outline-2 group/studentcard transition-all transition-200 ",
           "max-md:border border-transparent",
         ],
         { "max-md:border-gray-300": active }

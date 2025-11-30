@@ -25,8 +25,8 @@ export const useMutation = <TArgs extends [...any], TResult>(
       await fn(...data)
         .then(options?.onSuccess)
         .catch((e) => {
-          if (e?.status && e?.status >= 500 && e?.status % 500 > 100)
-            toast.error("An unexpected server error occured.", {
+          if (!e.status || (e?.status >= 500 && e?.status % 500 > 100))
+            toast.error("An unexpected server error occured 🫨", {
               position: "bottom-center",
             });
           else options?.onError?.(e);

@@ -59,10 +59,6 @@ export const CreateAcknowledgementModal: FC = () => {
                 position: "bottom-center",
               }
             );
-          } else {
-            toast.error("Unexpected error occured.", {
-              position: "bottom-center",
-            });
           }
           onError?.(e);
         },
