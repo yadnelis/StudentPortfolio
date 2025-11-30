@@ -96,8 +96,12 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
         {/* Time */}
         <div className="text-gray-700 sm:bg-slate-200 px-2 h-full flex items-center w-fit ">
           <span className="text-nowrap text-ellipsis">
-            {startDate && <span>{moment(startDate).format("YYYY/MM/DD")}</span>}
-            {endDate && <span> - {moment(endDate).format("YYYY/MM/DD")}</span>}
+            {startDate && (
+              <span>{moment(startDate).format("MMMM DD, YYYY")}</span>
+            )}
+            {endDate && (
+              <span> - {moment(endDate).format("MMMM DD, YYYY")}</span>
+            )}
           </span>
         </div>
         <div className="flex gap-2 justify-between items-center grow max-w-full min-w-0">
