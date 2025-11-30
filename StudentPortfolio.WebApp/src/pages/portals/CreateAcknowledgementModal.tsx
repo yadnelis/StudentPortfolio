@@ -22,10 +22,14 @@ export const CreateAcknowledgementModal: FC = () => {
     setOpen(false);
   }, []);
 
-  useEvent(AppEvents.OpenCreateAcknowledgementModal, (e) => {
-    setOpen(true);
-    setStudent(e.detail);
-  });
+  useEvent(
+    AppEvents.OpenCreateAcknowledgementModal,
+    (e) => {
+      setOpen(true);
+      setStudent(e.detail);
+    },
+    []
+  );
 
   const onSubmit = useCallback<acknowledgemenetModalMutatefn>(
     async (payload, { onError, onSuccess }) => {

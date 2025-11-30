@@ -1,4 +1,11 @@
-import { ChevronDown, ChevronUp, Dot, Plus, Trash } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Dot,
+  PencilLine,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import moment from "moment";
 import {
   Children,
@@ -8,7 +15,6 @@ import {
   useState,
   type ComponentProps,
   type FC,
-  type MouseEventHandler,
   type ReactNode,
 } from "react";
 import toast from "react-hot-toast";
@@ -25,7 +31,7 @@ interface StudentProfileCardProps
   extends Omit<ComponentProps<"div">, "className"> {
   institutionalId?: string;
   children: ReactNode;
-  onClickAddAcknowledgement: MouseEventHandler<HTMLButtonElement>;
+
   student: Student;
   initialyOpen?: boolean;
 }
@@ -33,7 +39,7 @@ interface StudentProfileCardProps
 export const StudentProfileCard: FC<StudentProfileCardProps> = ({
   student,
   children,
-  onClickAddAcknowledgement,
+
   initialyOpen = false,
   ...props
 }) => {
@@ -62,8 +68,8 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
     return { visibleChildren, childrenLenght, otherChildren };
   }, [showHidden]);
 
-  const onRemove = useCallback(() => {
-    if (student.acknowledgements?.length ?? 0 > 0) {
+  const remove = useCallback(() => {
+    if (!student.acknowledgements?.length) {
       if (student?.id) {
         removeStudent([student.id], {
           onSuccess: () => {
@@ -84,6 +90,14 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
     }
   }, [student, removeStudent]);
 
+  const onClickEdit = useCallback(() => {
+    emitEvent(AppEvents.OpenUpdateStudentModal, { student });
+  }, [student]);
+
+  const addAcknowledgement = useCallback(() => {
+    emitEvent(AppEvents.OpenCreateAcknowledgementModal, student);
+  }, [student]);
+
   useOnClickOutsideElement(contRef, onClickOutside);
 
   return (
@@ -94,7 +108,7 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
       className={cn(
         [
           "px-10 w-[min(90vw,1200px)] py-7 space-y-2.5 bg-slate-50 shadow-lg max-w-300 outline-accent hover:outline-2 group/studentcard transition-all transition-200 ",
-          "max-md:border-1 border-transparent",
+          "max-md:border border-transparent",
         ],
         { "max-md:border-gray-300": active }
       )}
@@ -160,7 +174,7 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
       <div
         className={cn(
           [
-            "mt-5 flex h-fit gap-5 justify-end",
+            "mt-5 flex h-fit sm:gap-5 gap-1 justify-end",
             "invisible has-[&.deleting]:visible group-hover/studentcard:visible group-focus-within/studentcard:visible group-active/studentcard:visible",
           ],
           {
@@ -168,13 +182,19 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
           }
         )}
       >
-        <Button color="danger" onClick={onRemove}>
+        <Button color="danger" onClick={remove}>
           <span className="flex items-center gap-2">
-            <Trash className="inline size-5" />{" "}
+            <Trash2 className="inline size-5" />{" "}
             <span className="max-sm:hidden">Remove</span>
           </span>
         </Button>
-        <Button color={"accent"} onClick={onClickAddAcknowledgement}>
+        <Button onClick={onClickEdit}>
+          <span className="flex items-center gap-2">
+            <PencilLine className="inline size-5" />{" "}
+            <span className="max-sm:hidden">Edit</span>
+          </span>
+        </Button>
+        <Button color={"accent"} onClick={addAcknowledgement}>
           <span className="flex items-center gap-2">
             <Plus className="inline size-5" />{" "}
             <span className="max-sm:hidden">Acknowledge</span>

@@ -37,7 +37,6 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
     description,
     competitionName,
     competitionPosition,
-    studentOrganizatonName,
   } = acknowledgement;
   const contRef = useRef<HTMLDivElement>(null); //This is for mobile styling
   const [active, setActive] = useState(false); //This is for mobile styling
@@ -83,8 +82,8 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
       className={cn(["bg-slate-50 group border border-t-0 border-slate-300"], {
         "max-sm:border-slate-300 ": active,
       })}
-      onBlur={(e) => setActive(false)}
-      onClick={(e) => setActive(true)}
+      onBlur={() => setActive(false)}
+      onClick={() => setActive(true)}
     >
       <div
         className={cn(

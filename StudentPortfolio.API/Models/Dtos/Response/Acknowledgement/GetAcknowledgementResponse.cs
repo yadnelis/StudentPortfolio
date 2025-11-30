@@ -7,7 +7,7 @@ namespace StudentPortfolio.API.Models.Dtos.Response.Acknowledgement
 {
     public class GetAcknowledgementResponse : GetAcknowledgementResponseNoNavigation
     {
-        public GetStudentResponse Student { get; set; }
+        public GetStudentResponseNoNavigation Student { get; set; }
     }
 
     /**

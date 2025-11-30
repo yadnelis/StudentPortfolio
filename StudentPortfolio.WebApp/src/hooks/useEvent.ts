@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 
 export const AppEvents = {
-  OpenCreateUserModal: "modal.opencreateusermodal",
+  OpenCreateStudentModal: "modal.opencreatestudentmodal",
+  OpenUpdateStudentModal: "modal.openupdatestudentmodal",
   OpenCreateAcknowledgementModal: "modal.opencreateacknowledgementmodal",
   OpenUpdateAcknowledgementModal: "modal.openupdateacknowledgementmodal",
   RefreshStudentList: "app.refreshstudentlist",
@@ -11,7 +12,8 @@ export const AppEvents = {
   AcknowledgementDeleted: "acknowledgement.deleted",
   AcknowledgementCreated: "acknowledgement.created",
   AcknowledgementEdited: "acknowledgement.edited",
-  Search: "app.Search",
+  Search: "app.search",
+  ReplaceSearchValueNoUpdate: "search.replacevaluenoupdate",
 } as const;
 
 type eventNameArg = (typeof AppEvents)[keyof typeof AppEvents];
@@ -19,7 +21,8 @@ type eventCallbackArg = (arg: Event & { detail: any }) => void;
 
 export const useEvent = (
   userEvent: eventNameArg | eventNameArg[],
-  callback: eventCallbackArg
+  callback: eventCallbackArg,
+  deps: unknown[]
 ) => {
   useEffect(() => {
     if (Array.isArray(userEvent)) {
@@ -38,7 +41,7 @@ export const useEvent = (
         window.removeEventListener(userEvent, callback as EventListener);
       }
     };
-  }, []);
+  }, [userEvent, callback, ...(deps ?? [])]);
 };
 
 export const emitEvent = (eventName: eventNameArg, detail?: any) => {

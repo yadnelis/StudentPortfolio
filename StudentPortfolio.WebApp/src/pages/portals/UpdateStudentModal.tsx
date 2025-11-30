@@ -5,32 +5,40 @@ import { StudentApi } from "../../api/StudentApi";
 import { ModalRoot } from "../../components/Modal";
 import { AppEvents, emitEvent, useEvent } from "../../hooks/useEvent";
 import { useMutation } from "../../hooks/useMutation";
+import type { Student } from "../../types/dtos/student";
 import {
   StudentModalContent,
   type studentModalMutatefn,
 } from "./StudentModalContent";
 
-export const CreateStudentModal: FC = () => {
-  const [createStudent, { mutating }] = useMutation(StudentApi.create);
+export const UpdateStudentModal: FC = () => {
+  const [updateStudent, { mutating }] = useMutation(StudentApi.update);
   const [open, setOpen] = useState(false);
+  const [student, setStudent] = useState<Student | undefined>();
 
   const close = useCallback(() => {
     setOpen(false);
   }, []);
 
   useEvent(
-    AppEvents.OpenCreateStudentModal,
-    () => {
-      setOpen(true);
+    AppEvents.OpenUpdateStudentModal,
+    (e) => {
+      console.log(e);
+      if (e.detail?.student) {
+        setStudent(e.detail.student);
+        setOpen(true);
+      }
     },
     []
   );
 
-  const post = useCallback<studentModalMutatefn>(
+  const put = useCallback<studentModalMutatefn>(
     async (payload, { onSuccess, onError }) => {
-      createStudent([payload], {
+      if (!student?.id) return;
+
+      updateStudent([student.id, payload], {
         onSuccess: (e) => {
-          toast.success("Student created successfully!", {
+          toast.success("Student updated successfully!", {
             position: "bottom-center",
           });
 
@@ -41,14 +49,14 @@ export const CreateStudentModal: FC = () => {
         onError: (e) => {
           if (e.status === 422) {
             toast.error(
-              "Error creating student. Please review form validation errors.",
+              "Error update student. Please review form validation errors.",
               {
                 position: "bottom-center",
               }
             );
           } else if (e.status === 400) {
             toast.error(
-              "Could not create student due to errors in the values.",
+              "Could not update student due to errors in the values.",
               {
                 position: "bottom-center",
               }
@@ -58,17 +66,18 @@ export const CreateStudentModal: FC = () => {
         },
       });
     },
-    []
+    [student]
   );
 
   return createPortal(
     <ModalRoot onClose={close} opened={open} className="gap-5">
       <StudentModalContent
-        mutate={post}
+        mutate={put}
         onClose={close}
         mutating={mutating}
-        title="New Student"
-        submitText="Create"
+        student={student}
+        title={`Update '${student?.institutionalId}'`}
+        submitText="Update"
       />
     </ModalRoot>,
     document.body

@@ -33,7 +33,7 @@ const buttonVariants = tv({
       secondary: "bg-slate-300",
       danger:
         "text-vermilion-400 bg-transparent hover:bg-vermilion-400 hover:text-white active:bg-vermilion-600 active:text-white",
-      default: "hover:bg-slate-100 active:bg-slate-200",
+      default: "hover:bg-slate-100 active:bg-slate-200 text-gray-600",
     },
     rounded: {
       none: "",

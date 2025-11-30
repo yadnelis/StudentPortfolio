@@ -170,6 +170,7 @@ export const AcknowledgementModalContent: FC<
               <MaskedInput
                 label="Start Date"
                 className="w-full"
+                required
                 wrapperClassName="w-full"
                 placeholder="yyyy-mm-dd"
                 mask={"YYYY-MM-DD"}

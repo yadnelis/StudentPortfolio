@@ -24,7 +24,7 @@ export const AddStudentButton: FC<ButtonProps> = ({ className }) => {
           "hover:to-green-700 hover:from-lime-600",
         ])}
         onClick={() => {
-          emitEvent(AppEvents.OpenCreateUserModal);
+          emitEvent(AppEvents.OpenCreateStudentModal);
         }}
       >
         <UserPlus />

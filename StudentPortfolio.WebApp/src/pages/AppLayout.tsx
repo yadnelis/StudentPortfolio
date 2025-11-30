@@ -7,6 +7,7 @@ import { Layout } from "../components/LayoutComponents";
 import { CreateAcknowledgementModal } from "./portals/CreateAcknowledgementModal";
 import { CreateStudentModal } from "./portals/CreateStudentModal";
 import { UpdateAcknowledgementModal } from "./portals/UpdateAcknowledgementModal";
+import { UpdateStudentModal } from "./portals/UpdateStudentModal";
 
 export default function AppLayout() {
   return (
@@ -21,6 +22,7 @@ export default function AppLayout() {
           <CreateStudentModal />
           <CreateAcknowledgementModal />
           <UpdateAcknowledgementModal />
+          <UpdateStudentModal />
         </Layout.Portals>
         <Toaster />
       </MantineProvider>

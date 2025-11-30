@@ -4,7 +4,7 @@ namespace StudentPortfolio.API.Models.Dtos.Response.Student
 {
     public class GetStudentResponse : GetStudentResponseNoNavigation
     {
-        public IEnumerable<GetAcknowledgementResponse> Acknowledgements { get; set; }
+        public IEnumerable<GetAcknowledgementResponseNoNavigation> Acknowledgements { get; set; }
     }
 
     /**

@@ -28,9 +28,9 @@ const create = async (args?: CreateStudentRequest) => {
   return res.data;
 };
 
-const update = async (args?: CreateStudentRequest) => {
-  const url = controller;
-  var res = await axios.post<GetStudentsResponse>(url, args);
+const update = async (id: string, args?: CreateStudentRequest) => {
+  const url = `${controller}/${id}`;
+  var res = await axios.put<GetStudentsResponse>(url, args);
   return res.data;
 };
 

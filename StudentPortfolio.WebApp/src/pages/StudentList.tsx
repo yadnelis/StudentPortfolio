@@ -7,6 +7,7 @@ import { StudentProfileCardSkeleton } from "../components/StudentProfileCardSkel
 import { AppEvents, emitEvent, useEvent } from "../hooks/useEvent";
 import { useListQuery } from "../hooks/useQuery";
 import {
+  buildQuery,
   getQueryFromSearchValue,
   getQueryStringVariable,
 } from "../utilities/utils";
@@ -29,9 +30,22 @@ export const StudentList: FC = () => {
     studentHandlers.fetch([query]);
   };
 
-  useEvent(AppEvents.RefreshStudentList, () => {
-    studentHandlers.refetch();
-  });
+  const searchWithInstId = (value: string | undefined) => {
+    const query = buildQuery({
+      filter: { institutionalId: value },
+    });
+
+    history.pushState(null, "", `?search=${value}`);
+    studentHandlers.fetch([query]);
+  };
+
+  useEvent(
+    AppEvents.RefreshStudentList,
+    () => {
+      studentHandlers.refetch();
+    },
+    []
+  );
 
   useEvent(
     [
@@ -40,21 +54,36 @@ export const StudentList: FC = () => {
       AppEvents.AcknowledgementEdited,
     ],
     (e) => {
-      search(e.detail?.student?.institutionalId);
-    }
+      searchWithInstId(e.detail?.student?.institutionalId);
+      emitEvent(AppEvents.ReplaceSearchValueNoUpdate, {
+        value: e.detail?.student?.institutionalId,
+      });
+    },
+    []
   );
 
-  useEvent([AppEvents.StudentCreated, AppEvents.StudentEdited], (e) =>
-    search(e.detail?.institutionalId)
+  useEvent(
+    [AppEvents.StudentCreated, AppEvents.StudentEdited],
+    (e) => {
+      searchWithInstId(e.detail?.institutionalId);
+      emitEvent(AppEvents.ReplaceSearchValueNoUpdate, {
+        value: e.detail?.institutionalId,
+      });
+    },
+    []
   );
 
-  useEvent(AppEvents.Search, (e) => search(e.detail?.value));
+  useEvent(AppEvents.Search, (e) => search(e.detail?.value), []);
 
-  useEvent(AppEvents.StudentDeleted, (e) => {
-    if (e.detail?.id) {
-      studentHandlers.removeItem(e.detail.id);
-    }
-  });
+  useEvent(
+    AppEvents.StudentDeleted,
+    (e) => {
+      if (e.detail?.id) {
+        studentHandlers.removeItem(e.detail.id);
+      }
+    },
+    []
+  );
 
   return (
     <section className="relative flex flex-col h-full gap-12 items-center w-full p-12 overflow-y-auto overflow-x-hidden">
@@ -65,13 +94,7 @@ export const StudentList: FC = () => {
         </>
       ) : students?.length && students.length > 0 ? (
         students?.map((st, i) => (
-          <StudentProfileCard
-            key={st?.id + i}
-            student={st}
-            onClickAddAcknowledgement={() => {
-              emitEvent(AppEvents.OpenCreateAcknowledgementModal, st);
-            }}
-          >
+          <StudentProfileCard key={st?.id + i} student={st}>
             {st?.acknowledgements?.map((ack, i) => (
               <AcknowledgementListItem
                 key={ack.id + i}
