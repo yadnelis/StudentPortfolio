@@ -70,7 +70,7 @@ export const useListQuery = <
         options?.onError?.(e);
       })
       .finally(() => {
-        setIsFetching(false);
+        setIsFetchingMore(false);
       });
   }, [fn]);
 

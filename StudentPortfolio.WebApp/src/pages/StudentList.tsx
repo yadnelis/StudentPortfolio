@@ -3,6 +3,7 @@ import { useMemo, type FC } from "react";
 import { StudentApi } from "../api/StudentApi";
 import { AcknowledgementListItem } from "../components/AcknowledgementListItem";
 import { Button } from "../components/Button";
+import { LoaderSpinner } from "../components/LoaderSpinner";
 import { StudentProfileCard } from "../components/StudentProfileCard";
 import { StudentProfileCardSkeleton } from "../components/StudentProfileCardSkeleton";
 import { AppEvents, emitEvent, useEvent } from "../hooks/useEvent";
@@ -108,7 +109,8 @@ export const StudentList: FC = () => {
           ))}
           {studentMeta.morePages && (
             <Button onClick={() => studentHandlers.fetchAppend()}>
-              Show more results
+              Show more results{" "}
+              <LoaderSpinner visible={studentMeta.fetchingMore} size="2xs" />
             </Button>
           )}
         </>
