@@ -22,7 +22,7 @@ type eventCallbackArg = (arg: Event & { detail: any }) => void;
 export const useEvent = (
   userEvent: eventNameArg | eventNameArg[],
   callback: eventCallbackArg,
-  deps: unknown[]
+  deps: any[] = []
 ) => {
   useEffect(() => {
     if (Array.isArray(userEvent)) {
@@ -41,7 +41,7 @@ export const useEvent = (
         window.removeEventListener(userEvent, callback as EventListener);
       }
     };
-  }, [userEvent, callback, ...(deps ?? [])]);
+  }, [userEvent, callback, ...deps]);
 };
 
 export const emitEvent = (eventName: eventNameArg, detail?: any) => {
