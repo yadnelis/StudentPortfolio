@@ -23,7 +23,6 @@ export const UpdateStudentModal: FC = () => {
   useEvent(
     AppEvents.OpenUpdateStudentModal,
     (e) => {
-      console.log(e);
       if (e.detail?.student) {
         setStudent(e.detail.student);
         setOpen(true);
