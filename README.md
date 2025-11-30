@@ -3,8 +3,10 @@
 Student portfolio is an application meant for acknowledging student achievements. This repo contains the next.js server for the app.
 
 ## Deploying StudentPortfolio
-
-Right click the StudentPortfolio.Api project in visual studio and publish to a folder. This will create a.exe that runs the API and HTML server.
+- Open the package manager console and set StudentPortfolio.Api as the startup project.
+- Run the update-database command:
+  - Ensure the connection string for the database in the appSettings file is correct.
+- Right click the StudentPortfolio.Api project in visual studio and publish to a folder. This will create a.exe that runs the API and HTML server.
 
 > The API project runs the npm build command and the compiled react js application ends up in the wwroot folder. It is **not** necessary to build or move the recat app manually.
 
