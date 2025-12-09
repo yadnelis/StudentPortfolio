@@ -43,7 +43,6 @@ export const UpdateStudentModal: FC = () => {
             position: "bottom-center",
           });
 
-          emitEvent(AppEvents.RefreshStudentList);
           emitEvent(AppEvents.StudentCreated, e.entity);
           onSuccess?.();
         },

@@ -2,6 +2,7 @@ import { Pencil, Trash } from "lucide-react";
 import moment from "moment";
 
 import { useRef, useState, type FC } from "react";
+import toast from "react-hot-toast";
 import { AcknowledgementApi } from "../api/AcknowledgementApi";
 import { AppEvents, emitEvent } from "../hooks/useEvent";
 import { useMutation } from "../hooks/useMutation";
@@ -45,10 +46,16 @@ export const AcknowledgementListItem: FC<AcknowledgementProps> = ({
   );
 
   const remove = () => {
-    removeAcknowledgement([id]);
-    emitEvent(AppEvents.AcknowledgementDeleted, {
-      student,
-      acknowledgement,
+    removeAcknowledgement([id], {
+      onSuccess: () => {
+        emitEvent(AppEvents.AcknowledgementDeleted, {
+          student,
+          acknowledgement,
+        });
+      },
+      onError: () => {
+        toast.error("An error occured deleting the acknowledgement 😢");
+      },
     });
   };
 
