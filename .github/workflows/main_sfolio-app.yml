@@ -31,7 +31,7 @@ jobs:
 
       - name: Update database
         run: |
-          dotnet-ef database update -c StudentPortfolioContext -p StudentPortfolio.csproj -s StudentPortfolio.csproj
+          dotnet ef database update -c StudentPortfolioContext -p StudentPortfolio.csproj -s StudentPortfolio.csproj
         env:
           ASPNETCORE_ENVIRONMENT: Production
           DbConnection: ${{ secrets.DBCONNECTION }}
