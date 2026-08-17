@@ -31,7 +31,6 @@ jobs:
 
       - name: Update database
         run: |
-          dotnet tool restore
           dotnet-ef database update -c StudentPortfolioContext -p StudentPortfolio.csproj -s StudentPortfolio.csproj
         env:
           ASPNETCORE_ENVIRONMENT: Production
