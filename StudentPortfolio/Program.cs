@@ -31,12 +31,10 @@ builder.Services.AddScoped<IValidator<Acknowledgement, CreateAcknowledgementRequ
 builder.Services.AddScoped<IValidator<Student, CreateStudentRequest, UpdateStudentRequest>, StudentValidator>();
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
-var serverVersion = ServerVersion.AutoDetect(connectionString);
 
 builder.Services.AddDbContext<StudentPortfolioContext>(sbContextoptions =>
     sbContextoptions
-    .UseMySql(connectionString, serverVersion)
-    .UseSnakeCaseNamingConvention()
+    .UseSqlServer(connectionString)
     .EnableDetailedErrors()
 );
 

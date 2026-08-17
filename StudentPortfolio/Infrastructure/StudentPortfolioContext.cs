@@ -23,7 +23,7 @@ namespace StudentPortfolio.Infrastructure
             //    //.AreUnicode(false)
             //    //.AreFixedLength()
             //    //.HaveMaxLength(256);
-            //    .HaveColumnType("tinytext");
+            //    .HaveColumnType("NVARCHAR(255)");
 
             configurationBuilder.Properties<int>()
               //.AreUnicode(false)
