@@ -26,6 +26,15 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
+      - name: Update database
+        run: |
+          dotnet tool install --global dotnet-ef
+          dotnet tool restore
+          dotnet ef database update -c StudentPortfolioContext -p StudentPortfolio -s StudentPortfolio
+        env:
+          ASPNETCORE_ENVIRONMENT: Production
+          DbConnection: ${{ secrets.DBCONNECTION }}
+
       - name: dotnet publish
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
