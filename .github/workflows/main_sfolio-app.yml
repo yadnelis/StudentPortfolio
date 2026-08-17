@@ -30,7 +30,7 @@ jobs:
         run: |
           dotnet tool install --global dotnet-ef
           dotnet tool restore
-          dotnet ef database update -c StudentPortfolioContext -p StudentPortfolio -s StudentPortfolio
+          dotnet-ef database update -c StudentPortfolioContext -p StudentPortfolio -s StudentPortfolio
         env:
           ASPNETCORE_ENVIRONMENT: Production
           DbConnection: ${{ secrets.DBCONNECTION }}
