@@ -26,10 +26,13 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
+      - name: Restore Local Tools
+        run: dotnet tool restore
+
       - name: Update database
         run: |
           dotnet tool restore
-          dotnet ef database update -c StudentPortfolioContext -p StudentPortfolio -s StudentPortfolio
+          dotnet-ef database update -c StudentPortfolioContext -p StudentPortfolio.csproj -s StudentPortfolio.csproj
         env:
           ASPNETCORE_ENVIRONMENT: Production
           DbConnection: ${{ secrets.DBCONNECTION }}
