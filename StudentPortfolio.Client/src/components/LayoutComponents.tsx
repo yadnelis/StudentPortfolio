@@ -4,9 +4,15 @@ import { StudentSearchInput } from "./StudentSearchInput";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className={` h-full grid grid-rows-[min-content_minmax(0,1fr)]`}>
-      {children}
-    </div>
+    <>
+      <img
+        src="logo.png"
+        className="drop-shadow-sm drop-shadow-slate-300 w-[max(10vw,150px)] fixed right-0 bottom-0 m-1"
+      />
+      <div className={`h-full grid grid-rows-[min-content_minmax(0,1fr)]`}>
+        {children}
+      </div>
+    </>
   );
 };
 
@@ -19,7 +25,6 @@ export const Header: FC = () => {
     <header className=" bg-lime-800 flex justify-center items-center h-13 relative z-10">
       <AddStudentButton className="absolute left-5 top-6 z-10 max-md:scale-70 max-md:-left-1" />
       <StudentSearchInput />
-      <img src="logo.png" className="h-10 absolute right-4" />
     </header>
   );
 };

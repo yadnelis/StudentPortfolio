@@ -169,16 +169,15 @@ export const StudentProfileCard: FC<StudentProfileCardProps> = ({
         </div>
       )}
       <div
-        className={cn("mt-5 flex h-fit sm:gap-5 gap-1 justify-end", {
-          "max-md:visible": active,
-        })}
+        className={cn(
+          "mt-5 flex h-fit sm:gap-5 gap-1 justify-end",
+          "invisible has-[&.deleting]:visible group-hover/studentcard:visible group-focus-within:visible group-active/studentcard:visible group-focus/studentcard:visible",
+          {
+            "max-md:visible": active,
+          },
+        )}
       >
-        <div
-          className={cn(
-            "contents",
-            "invisible has-[&.deleting]:visible group-hover/studentcard:visible group-focus-within/studentcard:visible group-active/studentcard:visible",
-          )}
-        >
+        <div className={cn("contents")}>
           <Tooltip label="Remove Student" variant="danger">
             <Button color="danger" onClick={remove}>
               <span className="flex items-center gap-2">
